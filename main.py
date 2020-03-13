@@ -30,6 +30,12 @@ class CNCWindow(Tk):
         self.zPosScroll = Scale(self.contFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.Z)
         self.canvas     = Canvas(self.workFrame, width=640, height=480, bg='white')
 
+        self.setTopLeftCornerBtn = Button(self.contFrame, text = 'Верхний левый угол')
+        self.setBottomRigthCornerBtn = Button(self.contFrame, text = 'Нижний правый угол')
+        self.cncStopBtn = Button(self.contFrame, text = 'Стоп')
+        self.cncSafeZBtn = Button(self.contFrame, text = 'Безопасный Z')
+        self.cncHomeXYBtn = Button(self.contFrame, text = 'Установить X и Y в 0')
+        self.cncMoveFrame = LabelFrame(self.contFrame, text = 'Перемещение')
         
         self.topFrame.pack(side  = TOP, expand=0, fill=X)
         self.mainFrame.pack(side = BOTTOM, expand=1, fill=BOTH)
@@ -40,6 +46,26 @@ class CNCWindow(Tk):
         self.yPosScroll.pack(side = RIGHT,expand=0, fill=Y)
         self.zPosScroll.pack(side = LEFT, expand=1, fill=Y)
         self.canvas.pack(side = LEFT, expand = 1, fill=BOTH)
+        for button in [ self.setTopLeftCornerBtn, 
+                        self.setBottomRigthCornerBtn, 
+                        self.cncStopBtn,
+                        self.cncSafeZBtn,
+                        self.cncHomeXYBtn]:
+            button.pack(side = TOP, pady = 3, fill = X)
+        self.cncMoveFrame .pack(side = TOP, fill = X)
+        self.decxBtn = Button(self.cncMoveFrame, text = '←')
+        self.incxBtn = Button(self.cncMoveFrame, text = '→')
+        self.decyBtn = Button(self.cncMoveFrame, text = '↑')
+        self.incyBtn = Button(self.cncMoveFrame, text = '↓')
+        self.deczBtn = Button(self.cncMoveFrame, text = '↑')
+        self.inczBtn = Button(self.cncMoveFrame, text = '↓')
+        
+        self.decxBtn.grid(row = 1, column = 0)
+        self.incxBtn.grid(row = 1, column = 2)
+        self.decyBtn.grid(row = 0, column = 1)
+        self.incyBtn.grid(row = 2, column = 1)
+        self.deczBtn.grid(row = 0, column = 3)
+        self.inczBtn.grid(row = 2, column = 3)
     
     def __init__(self):
         super().__init__()
