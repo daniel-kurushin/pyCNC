@@ -9,25 +9,34 @@ Created on Fri Feb 28 19:10:39 2020
 from tkinter import *
 from tkinter import filedialog as fd
 
+XX, YY, ZZ = 0, 1, 2
+
 class CNCWindow(Tk):
     def __configure(self):
         self.bind('<Escape>', lambda x : self.destroy())        
 
-        self.X = IntVar(self, value = 0)
-        self.Y = IntVar(self, value = 0)
-        self.Z = IntVar(self, value = 0)
-        self.R = IntVar(self, value = 0)
-        self.P = IntVar(self, value = 0)
+        self.pos = (DoubleVar(self, value = 0, name = 'Уст. Х'), 
+                    DoubleVar(self, value = 0, name = 'Уст. Y'), 
+                    DoubleVar(self, value = 0, name = 'Уст. Z'))
+        self.R = DoubleVar(self, value = 0)
+        self.P = DoubleVar(self, value = 0)
         
-        self.topFrame = Frame(self, height=20, bg='green')        
-        self.mainFrame = LabelFrame(self, text = 'Управление CNC', bg='yellow')
-        self.settFrame = LabelFrame(self.mainFrame, width=300,  text = 'Параметры станка', bg='green')
-        self.workFrame = LabelFrame(self.mainFrame, height=500, text = 'Рабочая область',  bg='cyan')
-        self.contFrame = LabelFrame(self.mainFrame, width=300,  text = 'Управление',       bg='blue')
+        self.mpos = (DoubleVar(self, value = 0, name = 'Маш. Х'), 
+                     DoubleVar(self, value = 0, name = 'Маш. Y'), 
+                     DoubleVar(self, value = 0, name = 'Маш. Z'))
+        self.wpos = (DoubleVar(self, value = 0, name = 'Мир. Х'), 
+                     DoubleVar(self, value = 0, name = 'Мир. Y'), 
+                     DoubleVar(self, value = 0, name = 'Мир. Z'))
         
-        self.xPosScroll = Scale(self.workFrame, orient=HORIZONTAL, from_ = 0, to = 255, showvalue = 1, variable = self.X)
-        self.yPosScroll = Scale(self.workFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.Y)
-        self.zPosScroll = Scale(self.contFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.Z)
+        self.topFrame = Frame(self, height=20)        
+        self.mainFrame = LabelFrame(self, text = 'Управление CNC')
+        self.settFrame = LabelFrame(self.mainFrame, width=300,  text = 'Параметры станка')
+        self.workFrame = LabelFrame(self.mainFrame, height=500, text = 'Рабочая область' )
+        self.contFrame = LabelFrame(self.mainFrame, width=300,  text = 'Управление'      )
+        
+        self.xPosScroll = Scale(self.workFrame, orient=HORIZONTAL, from_ = 0, to = 255, showvalue = 1, variable = self.pos[XX])
+        self.yPosScroll = Scale(self.workFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.pos[YY])
+        self.zPosScroll = Scale(self.contFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.pos[ZZ])
         self.canvas     = Canvas(self.workFrame, width=640, height=480, bg='white')
 
         self.setTopLeftCornerBtn = Button(self.contFrame, text = 'Верхний левый угол')
@@ -66,6 +75,12 @@ class CNCWindow(Tk):
         self.incyBtn.grid(row = 2, column = 1)
         self.deczBtn.grid(row = 0, column = 3)
         self.inczBtn.grid(row = 2, column = 3)
+        
+        for pos in [ self.mpos, self.wpos ]:
+            for v in pos:
+                f = LabelFrame(self.settFrame, text = str(v))
+                f.pack(side = TOP, expand = 0, fill = Y)
+                Entry(f, textvariable = v).pack(side = TOP, expand = 0, fill = Y)
     
     def __init__(self):
         super().__init__()
