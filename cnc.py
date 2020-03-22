@@ -50,16 +50,23 @@ class CNC():
             self.cncport.close()
         except AttributeError:
             print('nothing to close!', file = sys.stderr)
-            
-    def go(self, pos = (0, 0, 0), absolute = 1):
+
+    def go(self, pos = (0, 0, 0), absolute = 1, _async = 0):
         bx, by, bz = [ bytes(str(x * 10), 'ascii') for x in pos ]
-        self.cncport.write(b'G0X%sY%sZ%s\n' % (bx, by, bz))
-        status = self.cncport.readline()
-        assert OK in status
-        mpos, wpos = self.get_status()
-        while self.__delta(pos, wpos) > 0.001:
+        try:
+            self.cncport.write(b'G0X%sY%sZ%s\n' % (bx, by, bz))
+            status = self.cncport.readline()
+            assert OK in status
+            if _async: return
             mpos, wpos = self.get_status()
-            sleep(0.01)
+            while self.__delta(pos, wpos) > 0.001:
+                mpos, wpos = self.get_status()
+                sleep(0.01)
+        except SerialException as e:
+            raise e
+        except AssertionError as e:
+            print(status, file = stderr)
+            raise e
             
     def go_z(self, amount = 0.0):
         self.cncport.write(b'G0Z%s\n' % bytes(str(amount), 'ascii'))
@@ -75,10 +82,11 @@ class CNC():
                 
 if __name__ == '__main__':
     cnc = CNC()
-    cnc.go((1,1,1))
-    cnc.go((1,0,1))
-    cnc.go((1,1,0))
-    cnc.go((0,0,0))
+    points = [(1,1,1), (1,0,1), (1,1,0), (0,0,0)]
+    for p in points:
+        cnc.go(p)
+    for p in points:
+        cnc.go(p, _async=1)
     del cnc
     
     
