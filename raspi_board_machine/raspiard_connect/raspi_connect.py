@@ -8,8 +8,58 @@ Created on 25.08.2021
 
 from serial import Serial, SerialException
 from time import sleep
+from tkinter import Tk
 
 PORTS = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4']
+
+commands_work = {
+    "connect"       : 5,
+    "ready_init"    : '555\r\n',
+    "ready_work"    : '666\r\n',
+    "ready_ch_stppr": '777\r\n',
+    "ready_ch_metr" : '7777\r\n'
+}
+
+commands = {
+    "init"   : 10,
+    "run"    : 20,
+    "get_mm" : 30
+}
+
+commands_run = {
+    "x" : 11,
+    "y" : 12,
+    "z" : 13
+}
+
+def event_w(event):
+    ramps.go("x", 1)
+def event_a(event):
+    ramps.go("y", 1)
+def event_s(event):
+    ramps.go("x", -1)
+def event_d(event):
+    ramps.go("y", -1)
+
+
+class WASD:
+    def __init__(self):
+        root = Tk()
+        ramps = Arduino(1)
+        ramps.connect()
+        root.bind('w', event_w)
+        root.bind('a', event_a)
+        root.bind('s', event_s)
+        root.bind('d', event_d)
+        root.mainloop()
+    def event_w(self, event):
+        ramps.go("x", 1)
+    def event_a(self, event):
+        ramps.go("y", 1)
+    def event_s(self, event):
+        ramps.go("x", -1)
+    def event_d(self, event):
+        ramps.go("y", -1)
 
 class Arduino():
 
@@ -21,12 +71,8 @@ class Arduino():
                 self.port = Serial(port = port, baudrate = 9600, timeout = 2)
                 #print(self.port.readlines())
                 b = self.port.read()
-
-
                 if b == x:
                     break
-
-
             except SerialException as e:
                 print(port, 'failed')
 
@@ -42,42 +88,67 @@ class Arduino():
     def __str__(self):
         return str(self.port)
 
+    def connect(self):
+        try:
+            self.port.write(str(commands_work.get("connect")).encode())
+        except:
+            print("Don't connect")
+
+    def disconnect(self):
+        print("write code for disconnect!")
+
+    def go(self, num_step, num_mm):
+        while(self.port.read_until().decode() != commands_work.get("ready_work")):
+            print(self.port.read_until())
+        self.port.write(str(commands.get("run")).encode())
+        while(self.port.read_until().decode() != commands_work.get("ready_ch_stppr")):
+            print(self.port.read_until())
+        self.port.write(str(commands_run.get(num_step)).encode())
+        while(self.port.read_until().decode() != commands_work.get("ready_ch_metr")):
+            print(self.port.read_until())
+        self.port.write(str(num_mm).encode())
+
+    def init_ino(self):
+        print(1)
+        while(self.port.read_until().decode() != commands_work.get("ready_work")):
+            print(self.port.read_until())
+        print(2)
+        self.port.write(str(commands.get("init")).encode())
+        print(3)
+        while(self.port.read_until().decode() != commands_work.get("ready_init")):
+            print(self.port.read_until())
+        print(4)
+
 if __name__ == '__main__':
-    """
-    device = Serial(port = '/dev/ttyUSB0', baudrate = 9600, timeout = 2)
-    device.write(str(10).encode())
-    while(1):
-        device.write(str(10).encode())
-        print(device.read_until())
-    """
+    """"
+    root = Tk()
     ramps = Arduino(1)
-    print(ramps)
-    ramps.port.write(str(5).encode())
-    #sleep(4)
+    ramps.connect()
+    root.bind('w', event_w)
+    root.bind('a', event_a)
+    root.bind('s', event_s)
+    root.bind('d', event_d)
+    root.mainloop()
+    """
+    #print(type(work_commands.get("connect")))
+    ramps = Arduino(1)
+    ramps.connect()
+
     print(1)
     while(ramps.port.read_until().decode() != '666\r\n'):
-        #ramps.port.write(str(5).encode())
         print(ramps.port.read_until())
     print(2)
-    #sleep(4)
     ramps.port.write(str(10).encode())
+    #print(ramps.port.read_until())
+    while(ramps.port.read_until().decode() != '555\r\n'):
+        #print(ramps.port.read_until())
+        pass
     print(3)
-
-    while(ramps.port.read_until().decode() != '777\r\n'):
-        print(ramps.port.read_until())
-    print(4)
-
-    ramps.port.write(str(11).encode())
-    while(ramps.port.read_until().decode() != '7777\r\n'):
-        print(ramps.port.read_until())
-    print(5)
-    #sleep(2)
-
-    #sleep(2)
-    ramps.port.write(str(20).encode())
-    print(6)
     while(ramps.port.read_until().decode() != '666\r\n'):
-        #ramps.port.write(str(5).encode())
-        print("RUN")
-    print("DONE!)")
+        print(ramps.port.read_until())
+
+    #ramps.init_ino()
+    #ramps.go("x", -85)
+    #ramps.go("y", 35)
+    ramps.disconnect()
     del ramps

@@ -5,9 +5,10 @@
 #define WORK     2
 
 #define W_COMMAND     0
-#define W_GET_DATA    1
-#define W_RUN         2
-#define W_OUTPUT_DATA 3
+#define W_INIT        1
+#define W_GET_DATA    2
+#define W_RUN         3
+#define W_OUTPUT_DATA 4
 
 #define STEPPER_CH   0
 #define STEPPER_X    1
@@ -33,7 +34,7 @@ void loop()
   {
     case INIT:
     {
-      init_ramps();
+      //init_ramps();
       state_connect = CONNECT;
       break;
     }
@@ -65,18 +66,31 @@ void loop()
             data = Serial.parseInt();
             if(data == 10)
             {
-              Serial.println(777);
-              state_work = W_RUN;
+              state_work = W_INIT;
+              Serial.print(555);
             }
             else if (data == 20)
             {
-              Serial.println(25);
+              Serial.println(777);
+              state_work = W_RUN;
+            }
+            else if (data == 30)
+            {
+              Serial.println(888);
               state_work = W_OUTPUT_DATA;
             }
             else
             {
               Serial.println(666);
             }
+            break;
+          }
+          case W_INIT:
+          {
+            Serial.println(555);
+            init_ramps();
+            state_work = W_COMMAND;
+            Serial.println(666);
             break;
           }
           case W_RUN:
@@ -115,6 +129,7 @@ void loop()
                   x_go(data);
                   data = 0;
                   state_stepper = STEPPER_EXIT;
+                  Serial.println(666);
                 }
                 Serial.println(7777);
                 break;
@@ -127,6 +142,7 @@ void loop()
                   y_go(data);
                   data = 0;
                   state_stepper = STEPPER_EXIT;
+                  Serial.println(666);
                 }
                 Serial.println(7777);
                 break;
@@ -139,6 +155,7 @@ void loop()
                   z_go(data);
                   data = 0;
                   state_stepper = STEPPER_EXIT;
+                  Serial.println(666);
                 }
                 Serial.println(7777);
                 break;
@@ -148,6 +165,7 @@ void loop()
                 data = 0;
                 state_work = W_COMMAND;
                 state_stepper = STEPPER_CH;
+                Serial.println(666);
                 break;
               }
             }
@@ -166,6 +184,9 @@ void loop()
           }
           case W_OUTPUT_DATA:
           {
+            //Serial.println(888);
+            state_work = W_COMMAND;
+            Serial.println(666);
             break;
           }
         }
