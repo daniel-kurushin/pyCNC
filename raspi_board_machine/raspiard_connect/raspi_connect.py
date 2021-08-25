@@ -17,7 +17,8 @@ commands_work = {
     "ready_init"    : '555\r\n',
     "ready_work"    : '666\r\n',
     "ready_ch_stppr": '777\r\n',
-    "ready_ch_metr" : '7777\r\n'
+    "ready_ch_metr" : '7777\r\n',
+    "ready_get_mm"  : '888\r\n'
 }
 
 commands = {
@@ -41,25 +42,6 @@ def event_s(event):
 def event_d(event):
     ramps.go("y", -1)
 
-
-class WASD:
-    def __init__(self):
-        root = Tk()
-        ramps = Arduino(1)
-        ramps.connect()
-        root.bind('w', event_w)
-        root.bind('a', event_a)
-        root.bind('s', event_s)
-        root.bind('d', event_d)
-        root.mainloop()
-    def event_w(self, event):
-        ramps.go("x", 1)
-    def event_a(self, event):
-        ramps.go("y", 1)
-    def event_s(self, event):
-        ramps.go("x", -1)
-    def event_d(self, event):
-        ramps.go("y", -1)
 
 class Arduino():
 
@@ -99,13 +81,16 @@ class Arduino():
 
     def go(self, num_step, num_mm):
         while(self.port.read_until().decode() != commands_work.get("ready_work")):
-            print(self.port.read_until())
+            #print(self.port.read_until())
+            pass
         self.port.write(str(commands.get("run")).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_stppr")):
-            print(self.port.read_until())
+            #print(self.port.read_until())
+            pass
         self.port.write(str(commands_run.get(num_step)).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_metr")):
-            print(self.port.read_until())
+            #print(self.port.read_until())
+            pass
         self.port.write(str(num_mm).encode())
 
     def init_ino(self):
@@ -118,6 +103,20 @@ class Arduino():
         while(self.port.read_until().decode() != commands_work.get("ready_init")):
             print(self.port.read_until())
         print(4)
+    def get_mm(self):
+        while(self.port.read_until().decode() != commands_work.get("ready_work")):
+            pass
+        self.port.write(str(30).encode())
+        while True:
+            print(self.port.read_until().decode())
+
+        """
+        print(self.port.read_until().decode())
+        print(1)
+        self.port.write(str(commands.get("666")).encode())
+        while(self.port.read_until().decode() != commands_work.get("ready_work")):
+            pass
+        """
 
 if __name__ == '__main__':
     """"
@@ -133,7 +132,7 @@ if __name__ == '__main__':
     #print(type(work_commands.get("connect")))
     ramps = Arduino(1)
     ramps.connect()
-
+    """
     print(1)
     while(ramps.port.read_until().decode() != '666\r\n'):
         print(ramps.port.read_until())
@@ -146,9 +145,13 @@ if __name__ == '__main__':
     print(3)
     while(ramps.port.read_until().decode() != '666\r\n'):
         print(ramps.port.read_until())
-
+    """
     #ramps.init_ino()
-    #ramps.go("x", -85)
-    #ramps.go("y", 35)
+    ramps.go("x", 80)
+    ##ramps.get_mm()
+    ramps.go("y", 50)
+    ramps.go("x", -20)
+    ramps.go("y", -30)
+    ramps.go("z", 25)
     ramps.disconnect()
     del ramps

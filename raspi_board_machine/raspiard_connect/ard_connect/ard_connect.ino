@@ -127,6 +127,7 @@ void loop()
                 if(data != 0)
                 {
                   x_go(data);
+                  //init_ramps();
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
@@ -152,7 +153,8 @@ void loop()
                 data = Serial.parseInt();
                 if(data != 0)
                 {
-                  z_go(data);
+                  //z_go(data);
+                  init_ramps();
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
@@ -184,8 +186,13 @@ void loop()
           }
           case W_OUTPUT_DATA:
           {
-            //Serial.println(888);
-            state_work = W_COMMAND;
+            Serial.println(888);
+            Serial.println(2021);
+            data = Serial.parseInt();
+            if(data == 666)
+            {
+              state_work = W_COMMAND;
+            }
             Serial.println(666);
             break;
           }
