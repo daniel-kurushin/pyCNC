@@ -51,4 +51,8 @@ void z_go(float mm);
 
 void init_ramps();
 
+float get_x_now();
+float get_y_now();
+float get_z_now();
+
 #endif

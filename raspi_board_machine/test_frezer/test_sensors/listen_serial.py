@@ -24,4 +24,3 @@ device = Serial(port = port, baudrate = baudrate, timeout = 2)
 while True:
     data = device.read_until()
     print(data)
-    

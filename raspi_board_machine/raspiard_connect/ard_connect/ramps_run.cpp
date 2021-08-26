@@ -1,9 +1,9 @@
 #include "ramps_run.h"
 #include "Arduino.h"
 
-float x_now = 0;
-float y_now = 0;
-float z_now = 0;
+float x_now = 0.0;
+float y_now = 0.0;
+float z_now = 0.0;
 
 void setup_x()
 {
@@ -145,4 +145,19 @@ void init_ramps()
   x_now = 0;
   y_now = 0;
   z_now = 0;
+}
+
+float get_x_now()
+{
+  return x_now;
+}
+
+float get_y_now()
+{
+  return y_now;
+}
+
+float get_z_now()
+{
+  return z_now;
 }
