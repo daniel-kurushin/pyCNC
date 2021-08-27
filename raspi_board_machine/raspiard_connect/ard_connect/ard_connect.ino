@@ -31,11 +31,11 @@ VL53L0X sensor;
 float get_mm()
 {
   long mm = 0;
-  for (int i = 0; i < 100; i++)
+  for (int i = 0; i < 20; i++)
   {
     mm += sensor.readRangeContinuousMillimeters();
   }
-  return mm / 100.0;
+  return mm / 20.0;
 }
 
 void setup()

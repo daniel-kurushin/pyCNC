@@ -181,7 +181,7 @@ if __name__ == '__main__':
     root.mainloop()
     """
     #print(type(work_commands.get("connect")))
-    file = open("run_27_08_2021_1835.txt", 'w')
+    file = open("run_27_08_2021_2011.txt", 'w')
     ramps = Arduino(1)
     ramps.connect()
     #ramps.init_ino()
@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
     ramps.go("x", 60)
     ramps.go("y", 70)
-    ramps.go("z", 40)
+    #ramps.go("z", 40)
     #sleep(10)
 
     data = str()
