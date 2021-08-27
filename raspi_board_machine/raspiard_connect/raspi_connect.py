@@ -123,7 +123,8 @@ class Arduino():
         while(self.port.read_until().decode() != commands_work.get("ready_ch_metr")):
             pass
         self.port.write(str(commands_work.get("first_num")).encode())
-        data = self.port.read_until().decode()
+        while self.port.read_until().decode() != commands_work.get("ready_ch_metr"):
+            data = self.port.read_until().decode()
         data = data[:-2]
         data = float(data)
         if data > 0:
@@ -180,16 +181,43 @@ if __name__ == '__main__':
     root.mainloop()
     """
     #print(type(work_commands.get("connect")))
-    file = open("piramida_3.txt", 'w')
+    file = open("run_27_08_2021_1835.txt", 'w')
     ramps = Arduino(1)
     ramps.connect()
+    #ramps.init_ino()
+    #print(ramps.get_mm())
+
     ramps.init_ino()
 
     ramps.go("x", 60)
-    ramps.go("y", 50)
+    ramps.go("y", 70)
     ramps.go("z", 40)
     #sleep(10)
+
     data = str()
+    i = 0
+    j = 0
+    dir = 0
+    mm_zero = ramps.get_mm()
+    while(i < 60):
+        while(j < 60):
+            mm = mm_zero - ramps.get_mm()
+            data = str(j) + " " + str(i) + " " + str(mm)
+            print(data)
+            file.write(data + '\n')
+            if dir == 0:
+                ramps.go("x", 2)
+            elif dir == 1:
+                ramps.go("x", -2)
+            j = j + 2
+        if dir == 0:
+            dir = 1
+        elif dir == 1:
+            dir = 0
+        ramps.go("y", -2)
+        i = i + 2
+        j = 0
+    """
     for i in range(30):
         for j in range(30):
             mm = ramps.get_mm()
@@ -203,6 +231,7 @@ if __name__ == '__main__':
             else:
                 ramps.go("x", -1)
         ramps.go("y", -1)
+    """
     file.close()
     #ramps.go("x", 40)
     #mm = ramps.get_mm()
@@ -215,5 +244,6 @@ if __name__ == '__main__':
     #ramps.go("y", -30)
     #ramps.go("z", 25)
     sleep(2)
+
     ramps.disconnect()
     del ramps

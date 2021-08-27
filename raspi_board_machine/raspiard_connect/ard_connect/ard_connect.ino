@@ -24,23 +24,24 @@
 int state_connect = 0;
 int state_work = 0;
 int state_stepper = 0;
-long data = 0;
+float data = 0.0;
 
 VL53L0X sensor;
 
 float get_mm()
 {
   long mm = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 100; i++)
   {
     mm += sensor.readRangeContinuousMillimeters();
   }
-  return mm / 10.0;
+  return mm / 100.0;
 }
 
 void setup()
 {
   Serial.begin(115200);
+  Serial.setTimeout(10);
   setup_steppers();
   setup_endstops();
 
@@ -171,7 +172,7 @@ void loop()
               }
               case STEPPER_X:
               {
-                data = Serial.parseInt();
+                data = Serial.parseFloat();
                 if(data != 0)
                 {
                   x_go(data);
@@ -185,7 +186,7 @@ void loop()
               }
               case STEPPER_Y:
               {
-                data = Serial.parseInt();
+                data = Serial.parseFloat();
                 if(data != 0)
                 {
                   y_go(data);
@@ -198,7 +199,7 @@ void loop()
               }
               case STEPPER_Z:
               {
-                data = Serial.parseInt();
+                data = Serial.parseFloat();
                 if(data != 0)
                 {
                   z_go(data);
@@ -228,6 +229,7 @@ void loop()
                 if(data == 42)
                 {
                   Serial.println(get_mm());
+                  //Serial.println(42.42);
                   data = 0;
                 }
                 else if (data == 73)
