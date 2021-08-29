@@ -181,7 +181,7 @@ if __name__ == '__main__':
     root.mainloop()
     """
     #print(type(work_commands.get("connect")))
-    file = open("run_27_08_2021_2011.txt", 'w')
+    file = open("run_27_08_2021_2210.txt", 'w')
     ramps = Arduino(1)
     ramps.connect()
     #ramps.init_ino()
@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
     ramps.go("x", 60)
     ramps.go("y", 70)
-    #ramps.go("z", 40)
+    ramps.go("z", 40)
     #sleep(10)
 
     data = str()
@@ -206,16 +206,16 @@ if __name__ == '__main__':
             print(data)
             file.write(data + '\n')
             if dir == 0:
-                ramps.go("x", 2)
+                ramps.go("x", 0.5)
             elif dir == 1:
-                ramps.go("x", -2)
-            j = j + 2
+                ramps.go("x", -0.5)
+            j = j + 0.5
         if dir == 0:
             dir = 1
         elif dir == 1:
             dir = 0
-        ramps.go("y", -2)
-        i = i + 2
+        ramps.go("y", -0.5)
+        i = i + 0.5
         j = 0
     """
     for i in range(30):
