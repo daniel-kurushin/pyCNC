@@ -9,6 +9,7 @@ Created on 25.08.2021
 from serial import Serial, SerialException
 from time import sleep
 from tkinter import Tk
+import cv2 as cv
 
 PORTS = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4']
 
@@ -49,6 +50,10 @@ def event_s(event):
 def event_d(event):
     ramps.go("y", -1)
 
+def camera_screen():
+    ret, frame = cv.VideoCapture(0).read()
+
+    cv.imwrite('img/test/test.jpeg', frame)
 
 class Arduino():
 
@@ -181,14 +186,22 @@ if __name__ == '__main__':
     root.mainloop()
     """
     #print(type(work_commands.get("connect")))
-    file = open("run_27_08_2021_2210.txt", 'w')
+    #file = open("run_27_08_2021_2210.txt", 'w')
     ramps = Arduino(1)
     ramps.connect()
     #ramps.init_ino()
     #print(ramps.get_mm())
-
-    ramps.init_ino()
-
+    i = 0
+    while i < 100:
+        print(ramps.get_mm())
+        i = i + 1
+    #ramps.init_ino()
+    #sleep(10)
+    #ramps.go("x", 60)
+    #ramps.go("y", 70)
+    #ramps.go("z", 20)
+    #camera_screen()
+    """
     ramps.go("x", 60)
     ramps.go("y", 70)
     ramps.go("z", 40)
@@ -217,7 +230,7 @@ if __name__ == '__main__':
         ramps.go("y", -0.5)
         i = i + 0.5
         j = 0
-    """
+
     for i in range(30):
         for j in range(30):
             mm = ramps.get_mm()
@@ -232,7 +245,7 @@ if __name__ == '__main__':
                 ramps.go("x", -1)
         ramps.go("y", -1)
     """
-    file.close()
+    #file.close()
     #ramps.go("x", 40)
     #mm = ramps.get_mm()
     #print(mm)
@@ -243,7 +256,7 @@ if __name__ == '__main__':
     #ramps.go("x", -20)
     #ramps.go("y", -30)
     #ramps.go("z", 25)
-    sleep(2)
+    #sleep(2)
 
-    ramps.disconnect()
-    del ramps
+    #ramps.disconnect()
+    #del ramps
