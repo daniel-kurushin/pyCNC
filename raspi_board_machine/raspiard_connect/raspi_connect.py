@@ -189,6 +189,7 @@ if __name__ == '__main__':
     ramps = Arduino(1)
     ramps.connect()
     ramps.init_ino()
+    print("READY")
     root.bind('w', event_w)
     root.bind('a', event_a)
     root.bind('s', event_s)
