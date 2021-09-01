@@ -2,16 +2,31 @@
 void setup() 
 {
   Serial.begin(9600); 
-  //Serial.setTimeout(10);
+  Serial.setTimeout(10);
   pinMode(13, OUTPUT);
 }
 
 float data = 0;
 int state_begin, state_end;
+String input;
 
 void loop() 
 {
+  if(Serial.available() > 0)
+  {
+    input = Serial.readStringUntil('\n');
+  }
+  if(input.indexOf('\n'))
+  {
+    for(int i = 0; i < 10; i++)
+    {
+      digitalWrite(13, !digitalRead(13));
+      delay(100);
+    }
+    input = "";
+  }
   
+  /*
   String pars = "{'state': 'ready', 'cmd': 'wait', 'data': 0}";
   String pars_state = "'state' : 'ready',";
   String pars_cmd = "'cmd' : 'wait',";
@@ -42,25 +57,6 @@ void loop()
   Serial.println(state);
   Serial.println(cmd);
   Serial.println(data);
-    /*
-  state_begin = pars.indexOf('state') + 5;
-  state_end = pars.indexOf(',', pars.indexOf('state')) - 2;
-  for(int i = state_begin; i <= state_end; i++)
-  {
-    Serial.print(pars[i]);
-  }
-  Serial.print('\n');
-  
-  while(pars[j] != ',')
-  {
-    
-    j++;
-  }
-  for(int i = 0; i <= pars.length(); i++)
-  {
-    
-  }
   while(1);
   */
-  while(1);
 }

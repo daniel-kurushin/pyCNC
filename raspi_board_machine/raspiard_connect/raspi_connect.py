@@ -10,6 +10,7 @@ from serial import Serial, SerialException
 from time import sleep
 from tkinter import Tk
 import cv2 as cv
+import datetime
 
 PORTS = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4']
 
@@ -49,11 +50,19 @@ def event_s(event):
     ramps.go("x", -1)
 def event_d(event):
     ramps.go("y", -1)
-
-def camera_screen():
+def event_c(event):
+    coor = ramps.get_now_coor()
+    camera_screen(coor)
+def event_q(event):
+    ramps.disconnect()
+    root.destroy()
+    
+def camera_screen(coor):
     ret, frame = cv.VideoCapture(0).read()
-
-    cv.imwrite('img/test/test.jpeg', frame)
+    now = datetime.datetime.now()
+    screen_name = 'img/test/' + str(coor) + "_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + '.jpeg'
+    cv.imwrite(screen_name, frame)
+    print("Screen saved in " + screen_name)
 
 class Arduino():
 
@@ -175,7 +184,7 @@ class Arduino():
 
 
 if __name__ == '__main__':
-    """"
+    
     root = Tk()
     ramps = Arduino(1)
     ramps.connect()
@@ -183,6 +192,8 @@ if __name__ == '__main__':
     root.bind('a', event_a)
     root.bind('s', event_s)
     root.bind('d', event_d)
+    root.bind('c', event_c)
+    root.bind('q', event_q)
     root.mainloop()
     """
     #print(type(work_commands.get("connect")))
@@ -201,7 +212,7 @@ if __name__ == '__main__':
     #ramps.go("y", 70)
     #ramps.go("z", 20)
     #camera_screen()
-    """
+    
     ramps.go("x", 60)
     ramps.go("y", 70)
     ramps.go("z", 40)

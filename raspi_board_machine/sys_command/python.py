@@ -17,6 +17,6 @@ arduino_in = {
 pars = dict()
 pars = {'state': 'ready', 'cmd': 'ready', 'data': 0}
 k = json.dumps(arduino_in, indent = 0)
-arduino = Serial(port = '/dev/ttyUSB0', baudrate = 9600, timeout = 2)
+arduino = Serial(port = '/dev/ttyUSB1', baudrate = 9600, timeout = 2)
 arduino.write(k.encode())
 print(k)
