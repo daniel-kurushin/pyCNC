@@ -60,7 +60,7 @@ def event_q(event):
 def camera_screen(coor):
     ret, frame = cv.VideoCapture(0).read()
     now = datetime.datetime.now()
-    screen_name = 'img/test/' + str(coor) + "_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + '.jpeg'
+    screen_name = 'img/test/' + '_'.join([ str(coor) for coor in coor]) + "_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + '.jpeg'
     cv.imwrite(screen_name, frame)
     print("Screen saved in " + screen_name)
 
