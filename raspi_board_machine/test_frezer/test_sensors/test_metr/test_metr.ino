@@ -6,13 +6,13 @@ VL53L0X sensor;
 float get_mm()
 {
   long mm = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 100; i++)
   {
     mm += sensor.readRangeContinuousMillimeters();
   }
   //S_mm = S_mm + mm - A_mm;
   //A_mm = S_mm / An;
-  return mm / 10.0;
+  return mm / 100.0;
 }
 
 void setup()
@@ -36,6 +36,6 @@ void setup()
 
 void loop()
 {
-  Serial.println(sensor.readRangeContinuousMillimeters());
+  Serial.println(get_mm());
   delay(500);
 }
