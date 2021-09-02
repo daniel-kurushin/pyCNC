@@ -31,11 +31,11 @@ VL53L0X sensor;
 float get_mm()
 {
   long mm = 0;
-  for (int i = 0; i < 100; i++)
+  for (int i = 0; i < 10; i++)
   {
     mm += sensor.readRangeContinuousMillimeters();
   }
-  return mm / 100.0;
+  return mm / 10.0;
 }
 
 void setup()
@@ -56,7 +56,7 @@ void setup()
   sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 10);
   sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 6);
   sensor.setMeasurementTimingBudget(200000);
-  //sensor.startContinuous();
+  sensor.startContinuous();
 }
 
 void loop()
