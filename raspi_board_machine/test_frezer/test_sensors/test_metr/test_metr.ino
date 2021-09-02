@@ -31,7 +31,7 @@ void setup()
   sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 10);
   sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 6);
   sensor.setMeasurementTimingBudget(200000);
-
+  sensor.startContinuous();
 }
 
 void loop()
