@@ -27,13 +27,15 @@ void setup()
     Serial.println("Failed to detect and initialize sensor!");
     delay(1000);
   }
-  sensor.startContinuous();
-
+  //sensor.startContinuous();
+  sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 10);
+  sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 6);
+  sensor.setMeasurementTimingBudget(200000);
 
 }
 
 void loop()
 {
-  Serial.println(get_mm());
+  Serial.println(sensor.readRangeContinuousMillimeters(););
   delay(500);
 }
