@@ -17,6 +17,15 @@ arduino_in = {
 pars = dict()
 pars = {'state': 'ready', 'cmd': 'ready', 'data': 0}
 k = json.dumps(arduino_in, indent = 0)
+print(bytes(k, "ascii"))
+
 arduino = Serial(port = '/dev/ttyUSB1', baudrate = 9600, timeout = 2)
-arduino.write(k.encode())
-print(k)
+arduino.write(bytes(k, "ascii"))
+"""
+counter = 0
+while counter < 3:
+    data = arduino.read().decode()
+    if len(data) > 1:
+        counter = counter + 1
+    print(data)    
+"""    

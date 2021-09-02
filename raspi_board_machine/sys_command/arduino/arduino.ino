@@ -12,20 +12,55 @@ String input;
 
 void loop() 
 {
+  String honepa, data;
+  int k = 0;
   if(Serial.available() > 0)
   {
-    input = Serial.readStringUntil('\n');
+    k = Serial.read();
+    if(k == 123)
+    {
+      while(honepa != "}")
+      {
+        honepa = Serial.readStringUntil('\n');
+        if(honepa.length() > 1)
+        {
+          Serial.println(honepa);
+        }
+      }
+      k = 0;
+    }
   }
-  if(input.indexOf('\n'))
+  if(honepa.length() > 0)
   {
     for(int i = 0; i < 10; i++)
     {
       digitalWrite(13, !digitalRead(13));
-      delay(100);
+      delay(3000);
     }
-    input = "";
+    honepa = "";
   }
-  
+  /*
+  String honepa;
+  int k = 0;
+  if(Serial.available() > 0)
+  {
+    k = Serial.read();
+    if(k == 123)
+    {
+      while(k != 125)
+      {
+        k = Serial.read();
+        honepa += char(k);
+      }
+    }
+  }
+  if(honepa.length() > 0)
+  {
+    Serial.println(honepa);
+    honepa = ""; 
+    while(1); 
+  }
+  */
   /*
   String pars = "{'state': 'ready', 'cmd': 'wait', 'data': 0}";
   String pars_state = "'state' : 'ready',";
