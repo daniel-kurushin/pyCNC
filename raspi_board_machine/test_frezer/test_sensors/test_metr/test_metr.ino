@@ -36,6 +36,6 @@ void setup()
 
 void loop()
 {
-  Serial.println(sensor.readRangeContinuousMillimeters(););
+  Serial.println(sensor.readRangeContinuousMillimeters());
   delay(500);
 }
