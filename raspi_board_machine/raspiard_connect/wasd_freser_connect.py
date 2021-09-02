@@ -8,6 +8,7 @@ Created on 25.08.2021
 
 from serial import Serial, SerialException
 from time import sleep
+from tkinter import Tk
 import cv2 as cv
 import datetime
 
@@ -40,6 +41,37 @@ commands_run = {
     "return_mm"   : 15,
     "return_coor" : 16
 }
+
+def event_w(event):
+    ramps.go("x", 1)
+def event_a(event):
+    ramps.go("y", 1)
+def event_s(event):
+    ramps.go("x", -1)
+def event_d(event):
+    ramps.go("y", -1)
+    
+def event_c(event):
+    coor = ramps.get_now_coor()
+    camera_screen(coor)
+    
+def event_m(event):
+    mm = ramps.get_mm()
+    print(mm)
+    
+def event_k(event):
+    coor = ramps.get_now_coor()
+    print(coor)
+
+def event_e(event):
+    ramps.go("z", 40)
+
+def event_i(event):
+    ramps.init_ino()
+
+def event_q(event):
+    ramps.disconnect()
+    root.destroy()
     
 def camera_screen(coor):
     ret, frame = cv.VideoCapture(0).read()
@@ -54,9 +86,7 @@ class Arduino():
         self.port = None
         for port in PORTS:
             try:
-                #print(port)
                 self.port = Serial(port = port, baudrate = 115200, timeout = 2)
-                #print(self.port.readlines())
                 b = self.port.read_until()
                 if b == commands_work.get("ramps_code"):
                     break
@@ -132,117 +162,48 @@ class Arduino():
     def get_now_coor(self):
         coor = list()
         while(self.port.read_until().decode() != commands_work.get("ready_work")):
-            pass
-        #print(11)
+            pass        
         self.port.write(str(commands.get("run")).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_stppr")):
             pass
-        #print(12)
         self.port.write(str(commands_run.get("return_coor")).encode())
-        #print(13)
         while(self.port.read_until().decode() != commands_work.get("ready_ch_metr")):
             pass
-        #print(1)
         self.port.write(str(commands_work.get("first_num")).encode())
         data = self.port.read_until().decode()
         data = data[:-2]
         data = float(data)
         coor.append(data)
-        #print(2)
         self.port.write(str(commands_work.get("second_num")).encode())
         data = self.port.read_until().decode()
         data = data[:-2]
         data = float(data)
         coor.append(data)
-        #print(3)
         self.port.write(str(commands_work.get("third_num")).encode())
         data = self.port.read_until().decode()
         data = data[:-2]
         data = float(data)
         coor.append(data)
-        #print(4)
         if 2 > 0:
             self.port.write(str(commands_work.get("the_end")).encode())
-        #print(5)
         return coor
 
 
 if __name__ == '__main__':
     
-    
-    #print(type(work_commands.get("connect")))
-    now = datetime.datetime.now()
-    fileName = "/run/run_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + ".txt"
-    file = open(fileName, 'w')
+    root = Tk()
     ramps = Arduino(1)
     ramps.connect()
     ramps.init_ino()
-    #print(ramps.get_mm())
-    #ramps.init_ino()
-    #sleep(10)
-    #ramps.go("x", 60)
-    #ramps.go("y", 70)
-    #ramps.go("z", 20)
-    #camera_screen()
-    
-    ramps.go("x", 60)
-    ramps.go("y", 70)
-    ramps.go("z", 40)
-    #sleep(10)
-
-    data = str()
-    i = 0
-    j = 0
-    dir = 0
-    mm_zero = ramps.get_mm()
-    while(i < 60):
-        while(j < 60):
-            mm = mm_zero - ramps.get_mm()
-            data = str(j) + " " + str(i) + " " + str(mm)
-            print(data)
-            file.write(data + '\n')
-            if dir == 0:
-                ramps.go("x", 2)
-            elif dir == 1:
-                ramps.go("x", -2)
-            j = j + 2
-        if dir == 0:
-            dir = 1
-        elif dir == 1:
-            dir = 0
-        ramps.go("y", -2)
-        i = i + 2
-        j = 0
-    file.close()
-    ramps.disconnect()
-    del ramps
-    """
-    for i in range(30):
-        for j in range(30):
-            mm = ramps.get_mm()
-            print(mm)
-            #coor = ramps.get_now_coor()
-            #print(coor)
-            data = str(j) + " " + str(i) + " " + str(mm)
-            file.write(data + '\n')
-            if i % 2 == 0:
-                ramps.go("x", 1)
-            else:
-                ramps.go("x", -1)
-        ramps.go("y", -1)
-    """
-    #file.close()
-    #ramps.go("x", 40)
-    #mm = ramps.get_mm()
-    #print(mm)
-    #print(type(mm))
-    #coor = ramps.get_now_coor()
-    #print(coor)
-    #ramps.go("y", 50)
-    #ramps.go("x", -20)
-    #ramps.go("y", -30)
-    #ramps.go("z", 25)
-    #sleep(2)
-
-    #ramps.disconnect()
-    #del ramps
+    print("READY")
+    root.bind('w', event_w)
+    root.bind('a', event_a)
+    root.bind('s', event_s)
+    root.bind('d', event_d)
+    root.bind('c', event_c)
+    root.bind('m', event_m)
+    root.bind('k', event_k)
+    root.bind('e', event_e)
+    root.bind('i', event_i)
+    root.bind('q', event_q)
+    root.mainloop()
