@@ -11,6 +11,7 @@ from time import sleep
 from tkinter import Tk
 import cv2 as cv
 import datetime
+import numpy as np
 
 PORTS = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4']
 
@@ -54,7 +55,10 @@ def event_d(event):
 def event_c(event):
     coor = ramps.get_now_coor()
     camera_screen(coor)
-    
+
+def event_v(event):
+    camera_video()
+
 def event_m(event):
     mm = ramps.get_mm()
     print(mm)
@@ -64,7 +68,10 @@ def event_k(event):
     print(coor)
 
 def event_e(event):
-    ramps.go("z", 40)
+    ramps.go("z", 1)
+
+def event_f(event):
+    ramps.go("z", -1)
 
 def event_i(event):
     ramps.init_ino()
@@ -79,6 +86,18 @@ def camera_screen(coor):
     screen_name = 'img/test/' + '_'.join([ str(coor) for coor in coor]) + "_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + '.jpeg'
     cv.imwrite(screen_name, frame)
     print("Screen saved in " + screen_name)
+
+def camera_video():
+    cap = cv.VideoCapture(0)
+
+    while(True): 
+        ret, frame = cap.read()
+        cv.imshow('Video', frame)
+        if cv.waitKey(1) & 0xFF == ord('x'):
+            break
+
+    cap.release()
+    cv.destroyAllWindows()
 
 class Arduino():
 
@@ -196,14 +215,16 @@ if __name__ == '__main__':
     ramps.connect()
     ramps.init_ino()
     print("READY")
-    root.bind('w', event_w)
-    root.bind('a', event_a)
-    root.bind('s', event_s)
-    root.bind('d', event_d)
-    root.bind('c', event_c)
-    root.bind('m', event_m)
-    root.bind('k', event_k)
-    root.bind('e', event_e)
-    root.bind('i', event_i)
-    root.bind('q', event_q)
+    root.bind('w', event_w) #x + 1
+    root.bind('a', event_a) #y + 1
+    root.bind('s', event_s) #x - 1
+    root.bind('d', event_d) #y + 1
+    root.bind('c', event_c) #camera_screen
+    root.bind('v', event_v) #camera_video
+    root.bind('m', event_m) #distanse
+    root.bind('k', event_k) #coor 
+    root.bind('e', event_e) #z + 1
+    root.bind('f', event_f) #z - 1
+    root.bind('i', event_i) #init
+    root.bind('q', event_q) #quit
     root.mainloop()
