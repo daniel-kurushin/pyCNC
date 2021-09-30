@@ -82,7 +82,7 @@ void z_step(int dir)
   delayMicroseconds(60);
   dw(zST, 1); dw(zDR, !d);
   delayMicroseconds(60);
-  y_now += dir * (1 / Z_STEPS_MM);
+  z_now += dir * (1 / Z_STEPS_MM);
 }
 
 void x_go(float mm)
