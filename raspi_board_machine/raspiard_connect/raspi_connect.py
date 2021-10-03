@@ -184,7 +184,7 @@ if __name__ == '__main__':
     print("servo stop")
     sleep(1)
     print("servo run")
-    ramps.wrt("20 17 0")
+    ramps.wrt("20 17 1")
     print("servo run")
     #sleep(3)
     ramps.disconnect()
