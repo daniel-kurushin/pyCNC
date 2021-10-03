@@ -66,12 +66,13 @@ void setup()
 
   Wire.begin();
   sensor.setTimeout(500);
-
+  
   if (!sensor.init())
   {
     Serial.println("Failed to detect and initialize sensor!");
     delay(1000);
   }
+  
   sensor.startContinuous();
 }
 
@@ -307,6 +308,10 @@ void loop()
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
                 }
+                else
+                {
+                  state_stepper = STEPPER_EXIT;
+                }
                 Serial.println(7777);
                 break;
               }
@@ -319,6 +324,10 @@ void loop()
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
+                }
+                else
+                {
+                  state_stepper = STEPPER_EXIT;
                 }
                 Serial.println(7777);
                 break;
