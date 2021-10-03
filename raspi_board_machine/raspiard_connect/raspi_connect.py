@@ -182,15 +182,12 @@ if __name__ == '__main__':
     #print("lazer_end")
     #sleep(3)
     ramps.go("plate_servo", 0)
-<<<<<<< HEAD
-    sleep(3)
-    ramps.go("lazer_servo", 180)
-=======
-    print("plate_end")
->>>>>>> f1da90e929afa06f15ff3311dbf88e863031c12a
     sleep(3)
     #ramps.go("lazer_servo", 180)
-    print("lazer_end")
+    print("plate_end")
+    sleep(3)
+    #ramps.go("lazer_servo", 180)
+    #print("lazer_end")
     #sleep(3)
     ramps.go("plate_servo", 180)
     print("plate_end")
