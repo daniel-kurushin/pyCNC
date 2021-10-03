@@ -180,7 +180,7 @@ if __name__ == '__main__':
     print("servo_run")
     for i in range(180):
         ramps.go("plate_servo", i)
-	sleep(0.01)
+        sleep(0.01)
     ramps.disconnect()
     del ramps
     #sleep(10)
