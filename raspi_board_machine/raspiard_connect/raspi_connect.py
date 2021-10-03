@@ -38,9 +38,11 @@ commands_run = {
     "z"           : 13,
     "init"        : 14,
     "return_mm"   : 15,
-    "return_coor" : 16
+    "return_coor" : 16,
+    "lazer_servo" : 17,
+    "plate_servo" : 18
 }
-    
+
 def camera_screen(coor):
     ret, frame = cv.VideoCapture(0).read()
     now = datetime.datetime.now()
@@ -168,8 +170,8 @@ class Arduino():
 
 
 if __name__ == '__main__':
-    
-    
+
+
     #print(type(work_commands.get("connect")))
     now = datetime.datetime.now()
     fileName = "/run/run_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + ".txt"
@@ -177,19 +179,17 @@ if __name__ == '__main__':
     ramps = Arduino(1)
     ramps.connect()
     ramps.init_ino()
-    #print(ramps.get_mm())
-    #ramps.init_ino()
-    #sleep(10)
-    #ramps.go("x", 60)
-    #ramps.go("y", 70)
-    #ramps.go("z", 20)
-    #camera_screen()
-    
-    ramps.go("x", 60)
-    ramps.go("y", 70)
-    ramps.go("z", 40)
-    #sleep(10)
 
+    ramps.go("lazer_servo", 0)
+    ramps.go("plate_servo", 0)
+    slepp(3)
+    ramps.go("lazer_servo", 180)
+    ramps.go("plate_servo", 180)
+    sleep(2)
+    ramps.disconnect()
+    del ramps
+    #sleep(10)
+    """
     data = str()
     i = 0
     j = 0
@@ -216,7 +216,7 @@ if __name__ == '__main__':
     file.close()
     ramps.disconnect()
     del ramps
-    """
+
     for i in range(30):
         for j in range(30):
             mm = ramps.get_mm()

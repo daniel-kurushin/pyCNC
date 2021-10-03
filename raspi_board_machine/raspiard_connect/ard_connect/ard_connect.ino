@@ -1,6 +1,10 @@
 #include "ramps_run.h"
 #include <Wire.h>
 #include <VL53L0X.h>
+#include <Servo.h>
+
+Servo lazer_servo;
+Servo plate_servo;
 
 #define INIT     0
 #define CONNECT  1
@@ -19,7 +23,9 @@
 #define INIT_XYZ     4
 #define RETURN_MM    5
 #define RETURN_XYZ   6
-#define STEPPER_EXIT 7
+#define LAZER_SERVO  7
+#define PLATE_SERVO  8
+#define STEPPER_EXIT 8
 
 int state_connect = 0;
 int state_work = 0;
@@ -38,12 +44,25 @@ float get_mm()
   return mm / 100.0;
 }
 
+void lazer_go(int degree)
+{
+  lazer_servo.write(degree);
+}
+
+void plate_go(int degree)
+{
+  plate_servo.write(degree);
+}
+
 void setup()
 {
   Serial.begin(115200);
   Serial.setTimeout(10);
   setup_steppers();
   setup_endstops();
+
+  lazer_servo.attach(11);
+  plate_servo.attach(6);
 
   Wire.begin();
   sensor.setTimeout(500);
@@ -164,6 +183,16 @@ void loop()
                   Serial.println(7777);
                   state_stepper = RETURN_XYZ;
                 }
+                else if (data == 17)
+                {
+                  Serial.println(7777);
+                  state_stepper = LAZER_SERVO;
+                }
+                else if (data == 18)
+                {
+                  Serial.println(7777);
+                  state_stepper = PLATE_SERVO;
+                }
                 else
                 {
                   Serial.println(777);
@@ -266,6 +295,32 @@ void loop()
                   Serial.println(666);
                 }
                 //Serial.println(7777);
+                break;
+              }
+              case LAZER_SERVO:
+              {
+                data = Serial.parseFloat();
+                if(data != 0)
+                {
+                  lazer_go(data);
+                  data = 0;
+                  state_stepper = STEPPER_EXIT;
+                  Serial.println(666);
+                }
+                Serial.println(7777);
+                break;
+              }
+              case PLATE_SERVO:
+              {
+                data = Serial.parseFloat();
+                if(data != 0)
+                {
+                  plate_go(data);
+                  data = 0;
+                  state_stepper = STEPPER_EXIT;
+                  Serial.println(666);
+                }
+                Serial.println(7777);
                 break;
               }
               case STEPPER_EXIT:

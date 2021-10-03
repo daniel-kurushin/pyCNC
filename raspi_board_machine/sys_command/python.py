@@ -9,11 +9,7 @@ Created on Tue Aug 31 17:35:40 2021
 import json
 from serial import Serial, SerialException
 
-arduino_in = {
-        "state" : "ready",
-        "cmd"   : "ready",
-        "data"  : '0'
-        }
+arduino_in = { "state" : "ready", "cmd"   : "ready", "data"  : '0'}
 pars = dict()
 pars = {'state': 'ready', 'cmd': 'ready', 'data': 0}
 k = json.dumps(arduino_in, indent = 0)
@@ -27,5 +23,5 @@ while counter < 3:
     data = arduino.read().decode()
     if len(data) > 1:
         counter = counter + 1
-    print(data)    
-"""    
+    print(data)
+"""
