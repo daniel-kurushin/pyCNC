@@ -168,6 +168,8 @@ class Arduino():
         #print(5)
         return coor
     def wrt(self, data):
+        print(type(data))
+        print(data.encode())
         self.port.write(data.encode())
 
 
@@ -180,12 +182,19 @@ if __name__ == '__main__':
     ramps.connect()
     ramps.init_ino()
     print("servo_run")
-    ramps.wrt("20 17 0")
+    #ramps.wrt("20 17 180")
+    ramps.go("lazer_servo", 180)
     print("servo stop")
-    sleep(1)
+    sleep(2)
     print("servo run")
-    ramps.wrt("20 17 180")
+    #ramps.wrt("20 17 1")
+    ramps.go("lazer_servo", 1)
     print("servo run")
+    for i in range(10):
+        ramps.go("lazer_servo", 180)
+        sleep(1)
+        ramps.go("lazer_servo", 1)
+        sleep(1)
     sleep(3)
     ramps.disconnect()
     del ramps
