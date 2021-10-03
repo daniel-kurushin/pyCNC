@@ -25,7 +25,7 @@ Servo plate_servo;
 #define RETURN_XYZ   6
 #define LAZER_SERVO  7
 #define PLATE_SERVO  8
-#define STEPPER_EXIT 8
+#define STEPPER_EXIT 9
 
 int state_connect = 0;
 int state_work = 0;
