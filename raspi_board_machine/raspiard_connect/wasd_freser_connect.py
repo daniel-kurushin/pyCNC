@@ -40,7 +40,9 @@ commands_run = {
     "z"           : 13,
     "init"        : 14,
     "return_mm"   : 15,
-    "return_coor" : 16
+    "return_coor" : 16,
+    "lazer_servo" : 17,
+    "plate_servo" : 18
 }
 
 def event_w(event):
@@ -51,7 +53,7 @@ def event_s(event):
     ramps.go("x", -1)
 def event_d(event):
     ramps.go("y", -1)
-    
+
 def event_c(event):
     coor = ramps.get_now_coor()
     camera_screen(coor)
@@ -62,7 +64,7 @@ def event_v(event):
 def event_m(event):
     mm = ramps.get_mm()
     print(mm)
-    
+
 def event_k(event):
     coor = ramps.get_now_coor()
     print(coor)
@@ -73,13 +75,25 @@ def event_e(event):
 def event_f(event):
     ramps.go("z", -1)
 
+def event_r(event):
+    ramps.go("plate_servo", 1)
+
+def event_g(event):
+    ramps.go("plate_servo", 180)
+
+def event_t(event):
+    ramps.go("lazer_servo", 1)
+    sleep(0.5)
+    ramps.go("lazer_servo", 180)
+    sleep(0.5)
+
 def event_i(event):
     ramps.init_ino()
 
 def event_q(event):
     ramps.disconnect()
     root.destroy()
-    
+
 def camera_screen(coor):
     ret, frame = cv.VideoCapture(0).read()
     now = datetime.datetime.now()
@@ -90,7 +104,7 @@ def camera_screen(coor):
 def camera_video():
     cap = cv.VideoCapture(0)
 
-    while(True): 
+    while(True):
         ret, frame = cap.read()
         cv.imshow('Video', frame)
         if cv.waitKey(1) & 0xFF == ord('x'):
@@ -181,7 +195,7 @@ class Arduino():
     def get_now_coor(self):
         coor = list()
         while(self.port.read_until().decode() != commands_work.get("ready_work")):
-            pass        
+            pass
         self.port.write(str(commands.get("run")).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_stppr")):
             pass
@@ -209,7 +223,7 @@ class Arduino():
 
 
 if __name__ == '__main__':
-    
+
     root = Tk()
     ramps = Arduino(1)
     ramps.connect()
@@ -222,9 +236,12 @@ if __name__ == '__main__':
     root.bind('c', event_c) #camera_screen
     root.bind('v', event_v) #camera_video
     root.bind('m', event_m) #distanse
-    root.bind('k', event_k) #coor 
+    root.bind('k', event_k) #coor
     root.bind('e', event_e) #z + 1
     root.bind('f', event_f) #z - 1
+    root.bind('r', event_r) #rotate plate +
+    root.bind('g', event_g) #rotate plate-
+    root.bind('t', event_t) #rotate lazer
     root.bind('i', event_i) #init
     root.bind('q', event_q) #quit
     root.mainloop()
