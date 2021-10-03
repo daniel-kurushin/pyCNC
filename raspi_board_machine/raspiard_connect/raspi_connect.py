@@ -97,10 +97,10 @@ class Arduino():
         self.port.write(str(commands.get("run")).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_stppr")):
             pass
-        self.port.write(str(commands_run.get(num_step)).encode())
+        self.port.write((str(commands_run.get(num_step)) + " " + str(num_mm).encode()).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_metr")):
             pass
-        self.port.write(str(num_mm).encode())
+        #self.port.write(str(num_mm).encode())
 
     def init_ino(self):
         while(self.port.read_until().decode() != commands_work.get("ready_work")):
