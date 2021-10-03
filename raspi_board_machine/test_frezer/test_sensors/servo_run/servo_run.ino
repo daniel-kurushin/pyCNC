@@ -4,7 +4,7 @@ Servo lazer_servo;
 
 void setup()
 {
-  lazer_servo.attach(11);
+  lazer_servo.attach(6);
 }
 
 void loop()
