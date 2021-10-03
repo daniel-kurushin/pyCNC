@@ -178,9 +178,10 @@ if __name__ == '__main__':
     ramps.connect()
     ramps.init_ino()
     print("servo_run")
-    for i in range(180):
-        ramps.go("plate_servo", i)
-        sleep(0.01)
+    ramps.go("plate_servo", 0)
+    sleep(3)
+    ramps.go("plate_servo", 180)
+    sleep(3)
     ramps.disconnect()
     del ramps
     #sleep(10)
