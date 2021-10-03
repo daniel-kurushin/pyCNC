@@ -181,7 +181,7 @@ if __name__ == '__main__':
     ramps.go("lazer_servo", 0)
     sleep(3)
     ramps.go("plate_servo", 0)
-    slepp(3)
+    sleep(3)
     ramps.go("lazer_servo", 180)
     sleep(3)
     ramps.go("plate_servo", 180)

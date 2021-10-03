@@ -302,7 +302,7 @@ void loop()
                 data = Serial.parseFloat();
                 if(data != 0)
                 {
-                  lazer_go(data);
+                  lazer_servo.write(data);
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
@@ -315,7 +315,7 @@ void loop()
                 data = Serial.parseFloat();
                 if(data != 0)
                 {
-                  plate_go(data);
+                  plate_servo.write(data);
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
