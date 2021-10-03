@@ -233,6 +233,7 @@ void loop()
                 if(data != 0)
                 {
                   z_go(data);
+                  //plate_servo.write(data);
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
@@ -308,10 +309,6 @@ void loop()
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
                 }
-                else
-                {
-                  state_stepper = STEPPER_EXIT;
-                }
                 Serial.println(7777);
                 break;
               }
@@ -324,10 +321,6 @@ void loop()
                   data = 0;
                   state_stepper = STEPPER_EXIT;
                   Serial.println(666);
-                }
-                else
-                {
-                  state_stepper = STEPPER_EXIT;
                 }
                 Serial.println(7777);
                 break;

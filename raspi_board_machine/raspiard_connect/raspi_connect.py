@@ -97,10 +97,10 @@ class Arduino():
         self.port.write(str(commands.get("run")).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_stppr")):
             pass
-        self.port.write((str(commands_run.get(num_step)) + " " + str(num_mm).encode()).encode())
+        self.port.write(str(commands_run.get(num_step)).encode())
         while(self.port.read_until().decode() != commands_work.get("ready_ch_metr")):
             pass
-        #self.port.write(str(num_mm).encode())
+        self.port.write(str(num_mm).encode())
 
     def init_ino(self):
         while(self.port.read_until().decode() != commands_work.get("ready_work")):
@@ -167,6 +167,8 @@ class Arduino():
             self.port.write(str(commands_work.get("the_end")).encode())
         #print(5)
         return coor
+    def wrt(self, data):
+        self.port.write(data.encode())
 
 
 if __name__ == '__main__':
@@ -178,9 +180,12 @@ if __name__ == '__main__':
     ramps.connect()
     ramps.init_ino()
     print("servo_run")
-    ramps.go("plate_servo", 0)
+    ramps.wrt("20 18 90")
+    print("servo stop")
     sleep(3)
-    ramps.go("plate_servo", 180)
+    print("servo run")
+    ramps.wrt("20 18 180")
+    print("servo run")
     sleep(3)
     ramps.disconnect()
     del ramps
