@@ -170,12 +170,10 @@ class Arduino():
 
 
 if __name__ == '__main__':
-
-
     #print(type(work_commands.get("connect")))
-    now = datetime.datetime.now()
-    fileName = "/run/run_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + ".txt"
-    file = open(fileName, 'w')
+    #now = datetime.datetime.now()
+    #fileName = "/run/run_" + str(now.day) + "_" + str(now.month) + "_" + str(now.hour) + ":" + str(now.minute) + ".txt"
+    #file = open(fileName, 'w')
     ramps = Arduino(1)
     ramps.connect()
     ramps.init_ino()
