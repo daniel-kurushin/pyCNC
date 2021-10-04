@@ -236,18 +236,18 @@ if __name__ == '__main__':
     ramps.connect()
     ramps.init_ino()
     print("READY")
-    root.bind('w', lambda event : event_w) #x + 1
-    root.bind('a', lambda event : event_a) #y + 1
-    root.bind('s', lambda event : event_s) #x - 1
-    root.bind('d', lambda event : event_d) #y + 1
+    root.bind('w', lambda event : event_w(event)) #x + 1
+    root.bind('a', lambda event : event_a(event)) #y + 1
+    root.bind('s', lambda event : event_s(event)) #x - 1
+    root.bind('d', lambda event : event_d(event)) #y + 1
     root.bind('c', event_c) #camera_screen
     root.bind('v', event_v) #camera_video
     root.bind('m', event_m) #distanse
     root.bind('k', event_k) #coor
-    root.bind('e', lambda event : event_e) #z + 1
-    root.bind('f', lambda event : event_f) #z - 1
-    root.bind('r', lambda event : event_r) #rotate plate +
-    root.bind('g', lambda event : event_g) #rotate plate-
+    root.bind('e', lambda event : event_e(event)) #z + 1
+    root.bind('f', lambda event : event_f(event)) #z - 1
+    root.bind('r', lambda event : event_r(event)) #rotate plate +
+    root.bind('g', lambda event : event_g(event)) #rotate plate-
     root.bind('t', event_t) #rotate lazer
     root.bind('i', event_i) #init
     root.bind('q', event_q) #quit
