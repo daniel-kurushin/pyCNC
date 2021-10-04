@@ -15,6 +15,8 @@ import numpy as np
 
 PORTS = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4']
 
+plate_angle = 1
+
 commands_work = {
     "ramps_code"    : '1\r\n',
     "connect"       : 5,
@@ -68,6 +70,7 @@ def event_m(event):
 def event_k(event):
     coor = ramps.get_now_coor()
     print(coor)
+    print("Plate servo: " + str(plate_angle))
 
 def event_e(event):
     ramps.go("z", 1)
@@ -76,10 +79,14 @@ def event_f(event):
     ramps.go("z", -1)
 
 def event_r(event):
-    ramps.go("plate_servo", 1)
+    if plate_angle < 181 and plate_angle > 0:
+        plate_angle += 1
+        ramps.go("plate_servo", plate_angle)
 
 def event_g(event):
-    ramps.go("plate_servo", 180)
+    if plate_angle < 181 and plate_angle > 0:
+        plate_angle += 1
+        ramps.go("plate_servo", plate_angle)
 
 def event_t(event):
     ramps.go("lazer_servo", 1)
@@ -229,18 +236,18 @@ if __name__ == '__main__':
     ramps.connect()
     ramps.init_ino()
     print("READY")
-    root.bind('w', event_w) #x + 1
-    root.bind('a', event_a) #y + 1
-    root.bind('s', event_s) #x - 1
-    root.bind('d', event_d) #y + 1
+    root.bind('w', lambda event_w) #x + 1
+    root.bind('a', lambda event_a) #y + 1
+    root.bind('s', lambda event_s) #x - 1
+    root.bind('d', lambda event_d) #y + 1
     root.bind('c', event_c) #camera_screen
     root.bind('v', event_v) #camera_video
     root.bind('m', event_m) #distanse
     root.bind('k', event_k) #coor
-    root.bind('e', event_e) #z + 1
-    root.bind('f', event_f) #z - 1
-    root.bind('r', event_r) #rotate plate +
-    root.bind('g', event_g) #rotate plate-
+    root.bind('e', lambda event_e) #z + 1
+    root.bind('f', lambda event_f) #z - 1
+    root.bind('r', lambda event_r) #rotate plate +
+    root.bind('g', lambda event_g) #rotate plate-
     root.bind('t', event_t) #rotate lazer
     root.bind('i', event_i) #init
     root.bind('q', event_q) #quit
