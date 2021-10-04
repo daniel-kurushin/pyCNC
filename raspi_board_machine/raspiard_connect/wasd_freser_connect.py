@@ -87,7 +87,7 @@ def event_r(event):
 def event_g(event):
     global plate_angle
     if plate_angle < 181 and plate_angle > 0:
-        plate_angle += 1
+        plate_angle -= 1
         ramps.go("plate_servo", plate_angle)
 
 def event_t(event):
