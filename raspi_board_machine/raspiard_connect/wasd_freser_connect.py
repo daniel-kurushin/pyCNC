@@ -16,6 +16,7 @@ import numpy as np
 PORTS = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4']
 
 plate_angle = 1
+servo_angle = 1
 
 commands_work = {
     "ramps_code"    : '1\r\n',
@@ -91,10 +92,16 @@ def event_g(event):
         ramps.go("plate_servo", plate_angle)
 
 def event_t(event):
-    ramps.go("lazer_servo", 1)
-    sleep(0.5)
-    ramps.go("lazer_servo", 180)
-    sleep(0.5)
+    global servo_angle
+    if servo_angle < 181 and servo_angle > 0:
+        plate_angle += 1
+        ramps.go("lazer_servo", servo_angle)
+
+def event_h(event):
+    global servo_angle
+    if servo_angle < 181 and servo_angle > 0:
+        plate_angle -= 1
+        ramps.go("lazer_servo", servo_angle)
 
 def event_i(event):
     ramps.init_ino()
@@ -250,7 +257,8 @@ if __name__ == '__main__':
     root.bind('f', lambda event : event_f(event)) #z - 1
     root.bind('r', lambda event : event_r(event)) #rotate plate +
     root.bind('g', lambda event : event_g(event)) #rotate plate-
-    root.bind('t', event_t) #rotate lazer
+    root.bind('t', lambda event : event_t(event)) #rotate lazer
+    root.bind('h', lambda event : event_h(event)) #rotate lazer
     root.bind('i', event_i) #init
     root.bind('q', event_q) #quit
     root.mainloop()
