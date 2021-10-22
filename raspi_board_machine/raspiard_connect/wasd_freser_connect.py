@@ -94,13 +94,13 @@ def event_g(event):
 def event_t(event):
     global servo_angle
     if servo_angle < 181 and servo_angle > 0:
-        plate_angle += 1
+        servo_angle += 1
         ramps.go("lazer_servo", servo_angle)
 
 def event_h(event):
     global servo_angle
     if servo_angle < 181 and servo_angle > 0:
-        plate_angle -= 1
+        servo_angle -= 1
         ramps.go("lazer_servo", servo_angle)
 
 def event_i(event):
