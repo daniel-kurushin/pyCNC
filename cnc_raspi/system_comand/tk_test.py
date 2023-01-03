@@ -23,18 +23,19 @@ from tkinter import *
 from tkinter import filedialog as fd
 
 class CNCWindow(Tk):
-    def __configure(self):
+    def __configure__(self):
         self.bind('<Escape>', lambda x : self.destroy())
         self.title("CNC Фрезерный станок")
         self.geometry("480x320")
 
         self.mpos = (DoubleVar(self, value = 0, name = 'Маш. Х'), 
                      DoubleVar(self, value = 0, name = 'Маш. Y'), 
-                     DoubleVar(self, value = 0, name = 'Маш. Z'))
+                     DoubleVar(self, value = 0, name = 'Маш. Z'),
+                     DoubleVar(self, value = 0, name = 'Скорость Фрезы'))
 
         self.topFrame = Frame(self)        
         self.mainFrame = LabelFrame(self)
-        self.settFrame = LabelFrame(self.mainFrame, width = 100,  text = 'Параметры'  )
+        self.settFrame = LabelFrame(self.mainFrame, width = 80,  text = 'Параметры'  )
         self.statFrame = LabelFrame(self.mainFrame, width= 100,    text = 'Состояние:' )
         self.contFrame = LabelFrame(self.mainFrame,   text = 'Управление' )
         self.cncMoveFrame = LabelFrame(self.contFrame,text = 'Перемещение')
@@ -67,6 +68,8 @@ class CNCWindow(Tk):
             button.pack(side = TOP, pady = 3, fill = X)
 
         #contframe
+         #for x in [('←', 1,0, lambda x: pass),'→','↑','↓','↑','↓','⌂','cam']:
+
         self.decxBtn = Button(self.cncMoveFrame, text = '←')
         self.incxBtn = Button(self.cncMoveFrame, text = '→')
         self.decyBtn = Button(self.cncMoveFrame, text = '↑')
@@ -74,6 +77,7 @@ class CNCWindow(Tk):
         self.deczBtn = Button(self.cncMoveFrame, text = '↑')
         self.inczBtn = Button(self.cncMoveFrame, text = '↓')
         self.homeBtn = Button(self.cncMoveFrame, text = '⌂')
+        self.cameBtn = Button(self.cncMoveFrame, text = 'cam')
         
         self.decxBtn.grid(row = 1, column = 0)
         self.incxBtn.grid(row = 1, column = 2)
@@ -82,6 +86,7 @@ class CNCWindow(Tk):
         self.deczBtn.grid(row = 0, column = 3)
         self.inczBtn.grid(row = 2, column = 3)
         self.homeBtn.grid(row = 1, column = 1)
+        self.cameBtn.grid(row = 1, column = 3)
 
         for pos in [ self.mpos]:
             for v in pos:
@@ -90,10 +95,13 @@ class CNCWindow(Tk):
                 Entry(f, textvariable = v).pack(side = TOP, expand = 0, fill = Y)
 
 
+    def __config__(event):
+        print(event.width)
 
     def __init__(self):
         super().__init__()
-        self.__configure()
+        self.__configure__()
+        self.bind("<Configure>", self.__config__)    
         
 if __name__ == "__main__":
     from sys import argv
