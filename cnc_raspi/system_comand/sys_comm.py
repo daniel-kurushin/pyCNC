@@ -6,12 +6,12 @@ END    = 253
 delta  = 30
 
 def arduino_send(data):
-    ser.write(SYNHRO.to_bytes(1, byteorder='big',signed=0))
-    ser.write(SYNHRO.to_bytes(1, byteorder='big',signed=0))
-    ser.write(len(data).to_bytes(1, byteorder='big',signed=0))
+    ser.write(SYNHRO.to_bytes(2, byteorder='big',signed=0))
+    ser.write(SYNHRO.to_bytes(2, byteorder='big',signed=0))
+    ser.write(len(data).to_bytes(2, byteorder='big',signed=0))
     for i in data:
-        ser.write(i.to_bytes(1, byteorder='big',signed=1))
-    ser.write(END.to_bytes(1, byteorder='big',signed=0))
+        ser.write(i.to_bytes(2, byteorder='big',signed=1))
+    ser.write(END.to_bytes(2, byteorder='big',signed=0))
 
 def arduino_read():
     arduino_status  = str(ser.read_until('<').decode('ascii'))
@@ -30,10 +30,9 @@ def arduino_read():
 
 if __name__ == "__main__":
     ser = Serial('/dev/ttyUSB0', baudrate=9600, timeout=0.01)
-    sleep(1.2)
-    data = [0,0]
-    while(1):
-    	arduino_send(data)
-    	sleep(0.01)
-    	arduino_read()
+    sleep(15)
+    data = [500,0,0,125]
+    arduino_send(data)
+    sleep(15)
+    arduino_read()
     ser.close()

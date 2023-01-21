@@ -2,6 +2,8 @@
 #define Y_END 19
 #define Z_END 2
 
+#define FREZA 8
+
 #define xEN 38
 #define xDR A1
 #define xST A0
@@ -33,8 +35,7 @@
 #define ANG  4
 #define END  5
 
-float x, y, z;
-
+float x_now, y_now, z_now;
 void setup_x()
 {
   pm(xEN, 1); dw(xEN, 1);
@@ -85,7 +86,7 @@ void x_step(int dir)
   delayMicroseconds(60);
   dw(xST, 1); dw(xDR, !d);
   delayMicroseconds(60);
-  x += dir * (1 / X_STEPS_MM);
+  x_now += dir * (1 / X_STEPS_MM);
 }
 
 void y_step(int dir)
@@ -95,7 +96,7 @@ void y_step(int dir)
   delayMicroseconds(60);
   dw(yST, 1); dw(yDR, !d);
   delayMicroseconds(60);
-  y += dir * (1 / Y_STEPS_MM);
+  y_now += dir * (1 / Y_STEPS_MM);
 }
 
 void z_step(int dir)
@@ -105,7 +106,7 @@ void z_step(int dir)
   delayMicroseconds(60);
   dw(zST, 1); dw(zDR, !d);
   delayMicroseconds(60);
-  y += dir * (1 / Z_STEPS_MM);
+  z_now += dir * (1 / Z_STEPS_MM);
 }
 
 void x_go(float mm)
@@ -144,7 +145,31 @@ void z_go(float mm)
   z_enable(0);
 }
 
+void init_ramps()
+{
+  int count = 0;
+  while(dr(X_END) and (count < 270))
+  {
+    x_go(-1);
+    count++;
+  }
 
+  count = 0;
+  while(dr(Y_END) and (count < 170))
+  {
+    y_go(-1);
+    count++;
+  }
+  count = 0;
+  while(dr(Z_END) and (count < 80))
+  {
+    z_go(-1);
+    count++;
+  }
+  x_now = 0;
+  y_now = 0;
+  z_now = 0;
+}
 
 void setup()
 {
@@ -153,9 +178,13 @@ void setup()
   pinMode(X_END, INPUT);
   pinMode(Y_END, INPUT);
   pinMode(Z_END, INPUT);
+  pinMode(FREZA, OUTPUT);
+  init_ramps();
 }
 
+int x;
 int data;
+byte data_byte;
 int state = INIT;
 int n, end_x, end_y, end_z;
 int L;
@@ -166,7 +195,8 @@ void loop()
   end_y = digitalRead(Y_END);
   end_z = digitalRead(Z_END);
   if (Serial.available()) {
-    data = Serial.read();
+    data = Serial.read() << 8 | Serial.read();
+    
     switch (state) {
       case INIT:
         L = 0;
@@ -198,10 +228,16 @@ void loop()
         {
           switch (n++) {
             case 0:
-              x_go(data);
+              x_go(data - x_now);
               break;
             case 1:
-              y_go(data);
+              y_go(data - y_now);
+              break;
+            case 2:
+              z_go(data - z_now);
+              break;
+            case 3:
+              analogWrite(FREZA, data);
               break;
           }
         }
@@ -215,7 +251,7 @@ void loop()
     }
     
   }
-   Serial.println(data);
+    Serial.println(data);
     Serial.println(state);
     Serial.println(n);
     Serial.println(666);

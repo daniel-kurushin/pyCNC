@@ -36,6 +36,7 @@ class CNCWindow(Tk):
         
         self.xPosScroll = Scale(self.workFrame, orient=HORIZONTAL, from_ = 0, to = 255, showvalue = 1, variable = self.pos[XX])
         self.yPosScroll = Scale(self.workFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.pos[YY])
+        
         self.zPosScroll = Scale(self.contFrame, orient=VERTICAL,   from_ = 0, to = 255, showvalue = 1, variable = self.pos[ZZ])
         self.canvas     = Canvas(self.workFrame, width=640, height=480, bg='white')
 

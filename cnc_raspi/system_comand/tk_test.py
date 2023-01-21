@@ -94,14 +94,9 @@ class CNCWindow(Tk):
                 f.pack(side = TOP, expand = 0, fill = Y)
                 Entry(f, textvariable = v).pack(side = TOP, expand = 0, fill = Y)
 
-
-    def __config__(event):
-        print(event.width)
-
     def __init__(self):
         super().__init__()
-        self.__configure__()
-        self.bind("<Configure>", self.__config__)    
+        self.__configure__() 
         
 if __name__ == "__main__":
     from sys import argv
