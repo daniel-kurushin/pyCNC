@@ -84,9 +84,9 @@ void x_step(int dir, float speed_x)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(xST, 0); dw(xDR, d);
-  delayMicroseconds(round(round((pow(speed_x * 796, -1) * pow(10, 5)))/2));
+  delayMicroseconds(round(round((pow(speed_x * X_STEPS_MM, -1) * pow(10, 5)))/2));
   dw(xST, 1); dw(xDR, !d);
-  delayMicroseconds(round(round((pow(speed_x * 796, -1) * pow(10, 5)))/2));
+  delayMicroseconds(round(round((pow(speed_x * X_STEPS_MM, -1) * pow(10, 5)))/2));
   x_now += dir * (1 / X_STEPS_MM);
 }
 
@@ -94,9 +94,9 @@ void y_step(int dir, float speed_y)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(yST, 0); dw(yDR, d);
-  delayMicroseconds(round(round((pow(speed_y * 796, -1) * pow(10, 5)))/2));
+  delayMicroseconds(round(round((pow(speed_y * Y_STEPS_MM, -1) * pow(10, 5)))/2));
   dw(yST, 1); dw(yDR, !d);
-  delayMicroseconds(round(round((pow(speed_y * 796, -1) * pow(10, 5)))/2));
+  delayMicroseconds(round(round((pow(speed_y * Y_STEPS_MM, -1) * pow(10, 5)))/2));
   y_now += dir * (1 / Y_STEPS_MM);
 }
 
@@ -104,9 +104,9 @@ void z_step(int dir, float speed_z)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(zST, 0); dw(zDR, d);
-  delayMicroseconds(round(round((pow(speed_z * 796, -1) * pow(10, 5)))/2));
+  delayMicroseconds(round(round((pow(speed_z * Z_STEPS_MM, -1) * pow(10, 5)))/2));
   dw(zST, 1); dw(zDR, !d);
-  delayMicroseconds(round(round((pow(speed_z * 796, -1) * pow(10, 5)))/2));
+  delayMicroseconds(round(round((pow(speed_z * Z_STEPS_MM, -1) * pow(10, 5)))/2));
   z_now += dir * (1 / Z_STEPS_MM);
 }
 
