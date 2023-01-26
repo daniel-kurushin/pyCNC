@@ -1,6 +1,7 @@
 #define X_END 15
 #define Y_END 19
 #define Z_END 2
+#define F_END 3
 
 #define FREZA 8
 
@@ -79,70 +80,86 @@ void z_enable(int a)
   dw(zEN, !a);
 }
 
-void x_step(int dir)
+void x_step(int dir, float speed_x)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(xST, 0); dw(xDR, d);
-  delayMicroseconds(60);
+  delayMicroseconds(round(round((pow(speed_x * 796, -1) * pow(10, 5)))/2));
   dw(xST, 1); dw(xDR, !d);
-  delayMicroseconds(60);
+  delayMicroseconds(round(round((pow(speed_x * 796, -1) * pow(10, 5)))/2));
   x_now += dir * (1 / X_STEPS_MM);
 }
 
-void y_step(int dir)
+void y_step(int dir, float speed_y)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(yST, 0); dw(yDR, d);
-  delayMicroseconds(60);
+  delayMicroseconds(round(round((pow(speed_y * 796, -1) * pow(10, 5)))/2));
   dw(yST, 1); dw(yDR, !d);
-  delayMicroseconds(60);
+  delayMicroseconds(round(round((pow(speed_y * 796, -1) * pow(10, 5)))/2));
   y_now += dir * (1 / Y_STEPS_MM);
 }
 
-void z_step(int dir)
+void z_step(int dir, float speed_z)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(zST, 0); dw(zDR, d);
-  delayMicroseconds(60);
+  delayMicroseconds(round(round((pow(speed_z * 796, -1) * pow(10, 5)))/2));
   dw(zST, 1); dw(zDR, !d);
-  delayMicroseconds(60);
+  delayMicroseconds(round(round((pow(speed_z * 796, -1) * pow(10, 5)))/2));
   z_now += dir * (1 / Z_STEPS_MM);
 }
 
-void x_go(float mm)
+void x_go(float mm, float speed_x)
 {
   float steps = mm * X_STEPS_MM;
   x_enable(1);
   int d = steps > 0 ? FRW : BCK;
   for (long i = 0; i < abs(steps); i++)
   {
-    x_step(d);
+    x_step(d, speed_x); 
   }
   x_enable(0);
 }
 
-void y_go(float mm)
+void y_go(float mm, float speed_y)
 {
   float steps = mm * Y_STEPS_MM;
   y_enable(1);
   int d = steps > 0 ? FRW : BCK;
   for (long i = 0; i < abs(steps); i++)
   {
-    y_step(d);
+    y_step(d, speed_y); 
   }
   y_enable(0);
 }
 
-void z_go(float mm)
+void z_go(float mm, float speed_z)
 {
   float steps = mm * Z_STEPS_MM;
   z_enable(1);
   int d = steps > 0 ? FRW : BCK;
   for (long i = 0; i < abs(steps); i++)
   {
-    z_step(d);
+    z_step(d, speed_z);
   }
   z_enable(0);
+}
+
+float get_zero_freza()
+{
+  float freza_mm;
+  while(dr(F_END) and (z_now < 80))
+  {
+    z_go(0.01, 0.05);
+  }
+  freza_mm = z_now;
+  while(dr(Z_END))
+  {
+    z_go(-1, 1);
+  }
+  z_now = 0;
+  return freza_mm;
 }
 
 void init_ramps()
@@ -150,20 +167,20 @@ void init_ramps()
   int count = 0;
   while(dr(X_END) and (count < 270))
   {
-    x_go(-1);
+    x_go(-1, 2);
     count++;
   }
 
   count = 0;
   while(dr(Y_END) and (count < 170))
   {
-    y_go(-1);
+    y_go(-1, 2);
     count++;
   }
   count = 0;
   while(dr(Z_END) and (count < 80))
   {
-    z_go(-1);
+    z_go(-1, 2);
     count++;
   }
   x_now = 0;
@@ -178,6 +195,7 @@ void setup()
   pinMode(X_END, INPUT);
   pinMode(Y_END, INPUT);
   pinMode(Z_END, INPUT);
+  pinMode(F_END, INPUT_PULLUP);
   pinMode(FREZA, OUTPUT);
   init_ramps();
 }
@@ -191,12 +209,15 @@ int L;
 
 void loop()
 {
+  x_go(50, 4.5);
+  get_zero_freza();
+  while(1);
+  /*
   end_x = digitalRead(X_END);
   end_y = digitalRead(Y_END);
   end_z = digitalRead(Z_END);
   if (Serial.available()) {
     data = Serial.read() << 8 | Serial.read();
-    
     switch (state) {
       case INIT:
         L = 0;
@@ -258,5 +279,6 @@ void loop()
     Serial.println(end_x);
     Serial.println(end_y);
     Serial.println(end_z);
-    Serial.println("<"); 
+    Serial.println("<");
+    */
 }
