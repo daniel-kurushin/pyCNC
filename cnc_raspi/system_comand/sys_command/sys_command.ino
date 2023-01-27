@@ -151,14 +151,27 @@ float get_zero_freza()
   float freza_mm;
   while(dr(F_END) and (z_now < 80))
   {
-    z_go(0.01, 0.05);
+    z_go(0.01, 0.25);
   }
   freza_mm = z_now;
-  while(dr(Z_END))
+  int count = 0;
+  while(dr(Z_END) and (count < 80))
   {
     z_go(-1, 1);
+    count++;
   }
-  z_now = 0;
+  count = 0;
+  z_go(5, 1);
+  while(dr(Z_END) and (count < 80))
+  {
+    z_go(-0.25, 0.05);
+    count++;
+  }
+  while(!dr(Z_END))
+  {
+    z_go(0.01, 0.05);
+  }
+  z_now = 0.00;
   return freza_mm;
 }
 
@@ -167,21 +180,56 @@ void init_ramps()
   int count = 0;
   while(dr(X_END) and (count < 270))
   {
-    x_go(-1, 2);
+    x_go(-1, 1);
     count++;
+  }
+  count = 0;
+  x_go(3, 1);
+  while(dr(X_END) and (count < 270))
+  {
+    x_go(-0.01, 0.05);
+    count++;
+  }
+  while(!dr(X_END))
+  {
+    x_go(0.01, 0.05);
   }
 
   count = 0;
-  while(dr(Y_END) and (count < 170))
+  while(dr(Y_END) and (count < 270))
   {
-    y_go(-1, 2);
+    y_go(-1, 1);
     count++;
   }
   count = 0;
+  y_go(3, 1);
+  while(dr(Y_END) and (count < 270))
+  {
+    y_go(-0.01, 0.05);
+    count++;
+  }
+  while(!dr(Y_END))
+  {
+    y_go(0.01, 0.05);
+  }
+
+  
+  count = 0;
   while(dr(Z_END) and (count < 80))
   {
-    z_go(-1, 2);
+    z_go(-1, 1);
     count++;
+  }
+  count = 0;
+  z_go(5, 1);
+  while(dr(Z_END) and (count < 80))
+  {
+    z_go(-0.25, 0.05);
+    count++;
+  }
+  while(!dr(Z_END))
+  {
+    z_go(0.01, 0.05);
   }
   x_now = 0;
   y_now = 0;
@@ -197,7 +245,7 @@ void setup()
   pinMode(Z_END, INPUT);
   pinMode(F_END, INPUT_PULLUP);
   pinMode(FREZA, OUTPUT);
-  init_ramps();
+  //init_ramps();
 }
 
 int x;
@@ -209,8 +257,8 @@ int L;
 
 void loop()
 {
-  x_go(50, 4.5);
-  get_zero_freza();
+  //x_go(50, 4.5);
+  Serial.println(get_zero_freza());
   while(1);
   /*
   end_x = digitalRead(X_END);
