@@ -245,25 +245,18 @@ void setup()
   pinMode(Z_END, INPUT);
   pinMode(F_END, INPUT_PULLUP);
   pinMode(FREZA, OUTPUT);
-  //init_ramps();
+  init_ramps();
 }
 
 int x;
 int data;
-byte data_byte;
 int state = INIT;
 int n, end_x, end_y, end_z;
 int L;
 
 void loop()
 {
-  //x_go(50, 4.5);
-  Serial.println(get_zero_freza());
-  while(1);
-  /*
-  end_x = digitalRead(X_END);
-  end_y = digitalRead(Y_END);
-  end_z = digitalRead(Z_END);
+  float zero_freza = 10.56;
   if (Serial.available()) {
     data = Serial.read() << 8 | Serial.read();
     switch (state) {
@@ -297,13 +290,13 @@ void loop()
         {
           switch (n++) {
             case 0:
-              x_go(data - x_now);
+              x_go(data / 100, 1);
               break;
             case 1:
-              y_go(data - y_now);
+              y_go(data / 100, 1);
               break;
             case 2:
-              z_go(data - z_now);
+              z_go(data / 100, 1);
               break;
             case 3:
               analogWrite(FREZA, data);
@@ -318,15 +311,14 @@ void loop()
         }
         break;
     }
-    
+
   }
-    Serial.println(data);
     Serial.println(state);
-    Serial.println(n);
+    Serial.println(data);
     Serial.println(666);
-    Serial.println(end_x);
-    Serial.println(end_y);
-    Serial.println(end_z);
+    Serial.println(x);
+    Serial.println(y_now);
+    Serial.println(z_now);
+    Serial.println(zero_freza);
     Serial.println("<");
-    */
 }
