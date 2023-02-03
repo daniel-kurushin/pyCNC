@@ -26,9 +26,9 @@
 #define ar analogRead
 #define aw analogWrite
 
-#define X_STEPS_MM 800
-#define Y_STEPS_MM 800
-#define Z_STEPS_MM 800
+#define X_STEPS_MM 8
+#define Y_STEPS_MM 8
+#define Z_STEPS_MM 8
 
 #define INIT 0
 #define FSB  1
@@ -91,9 +91,9 @@ long x_step(int dir, float speed_x)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(xST, 0); dw(xDR, d);
-  delayMicroseconds(round(round((pow(speed_x * X_STEPS_MM, -1) * pow(10, 5))) / 2));
+  delayMicroseconds(round(round((pow(speed_x * 800, -1) * pow(10, 5))) / 2));
   dw(xST, 1); dw(xDR, !d);
-  delayMicroseconds(round(round((pow(speed_x * X_STEPS_MM, -1) * pow(10, 5))) / 2));
+  delayMicroseconds(round(round((pow(speed_x * 800, -1) * pow(10, 5))) / 2));
   return dir * 125; // round((1 / X_STEPS_MM) * 100000)
 }
 
@@ -101,9 +101,9 @@ void y_step(int dir, float speed_y)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(yST, 0); dw(yDR, d);
-  delayMicroseconds(round(round((pow(speed_y * Y_STEPS_MM, -1) * pow(10, 5))) / 2));
+  delayMicroseconds(round(round((pow(speed_y * 800, -1) * pow(10, 5))) / 2));
   dw(yST, 1); dw(yDR, !d);
-  delayMicroseconds(round(round((pow(speed_y * Y_STEPS_MM, -1) * pow(10, 5))) / 2));
+  delayMicroseconds(round(round((pow(speed_y * 800, -1) * pow(10, 5))) / 2));
   y_now += dir * 125;
 }
 
@@ -111,18 +111,19 @@ void z_step(int dir, float speed_z)
 {
   bool d = dir == FRW ? 1 : 0;
   dw(zST, 0); dw(zDR, d);
-  delayMicroseconds(round(round((pow(speed_z * Z_STEPS_MM, -1) * pow(10, 5))) / 2));
+  delayMicroseconds(round(round((pow(speed_z * 800, -1) * pow(10, 5))) / 2));
   dw(zST, 1); dw(zDR, !d);
-  delayMicroseconds(round(round((pow(speed_z * Z_STEPS_MM, -1) * pow(10, 5))) / 2));
-  z_now += dir * 0.00125;
+  delayMicroseconds(round(round((pow(speed_z * 800, -1) * pow(10, 5))) / 2));
+  z_now += dir * 125;
 }
 
-long x_go(long x,  float mm, float speed_x)
+long x_go(long x,  long mm, float speed_x)
 {
   long x1 = x;
-  float steps = mm * X_STEPS_MM;
+  long steps = mm * X_STEPS_MM;
   x_enable(1);
   int d = steps > 0 ? FRW : BCK;
+  //Serial.println(steps);
   for (long i = 0; i < abs(steps); i++)
   {
     x1 += x_step(d, speed_x);
@@ -131,9 +132,9 @@ long x_go(long x,  float mm, float speed_x)
   return x1;
 }
 
-void y_go(float mm, float speed_y)
+void y_go(long mm, float speed_y)
 {
-  float steps = mm * Y_STEPS_MM;
+  long steps = mm * Y_STEPS_MM;
   y_enable(1);
   int d = steps > 0 ? FRW : BCK;
   for (long i = 0; i < abs(steps); i++)
@@ -143,9 +144,9 @@ void y_go(float mm, float speed_y)
   y_enable(0);
 }
 
-void z_go(float mm, float speed_z)
+void z_go(long mm, float speed_z)
 {
-  float steps = mm * Z_STEPS_MM;
+  long steps = mm * Z_STEPS_MM;
   z_enable(1);
   int d = steps > 0 ? FRW : BCK;
   for (long i = 0; i < abs(steps); i++)
@@ -190,56 +191,56 @@ void init_ramps()
   long x;
   while (dr(X_END) and (count < 270))
   {
-    x_go(x, -1, 1);
+    x_go(x, -100, 1);
     count++;
   }
   count = 0;
   x_go(x, 3, 1);
   while (dr(X_END) and (count < 270))
   {
-    x_go(x, -0.01, 0.05);
+    x_go(x, -1, 0.05);
     count++;
   }
   while (!dr(X_END))
   {
-    x_go(x, 0.01, 0.05);
+    x_go(x, 1, 0.05);
   }
 
   count = 0;
   while (dr(Y_END) and (count < 270))
   {
-    y_go(-1, 1);
+    y_go(-100, 1);
     count++;
   }
   count = 0;
   y_go(3, 1);
   while (dr(Y_END) and (count < 900))
   {
-    y_go(-0.01, 0.05);
+    y_go(-1, 0.05);
     count++;
   }
   while (!dr(Y_END))
   {
-    y_go(0.01, 0.05);
+    y_go(1, 0.05);
   }
 
 
   count = 0;
   while (dr(Z_END) and (count < 80))
   {
-    z_go(-1, 1);
+    z_go(-100, 1);
     count++;
   }
   count = 0;
-  z_go(5, 1);
+  z_go(500, 1);
   while (dr(Z_END) and (count < 80))
   {
-    z_go(-0.25, 0.05);
+    z_go(-25, 0.05);
     count++;
   }
   while (!dr(Z_END))
   {
-    z_go(0.01, 0.05);
+    z_go(1, 0.05);
   }
   y_now = 0;
   z_now = 0;
@@ -260,8 +261,7 @@ void setup()
 void loop()
 {
   long x_now = 0;
-  float d = 0;
-  //x_now = x_go(x_now, 10, 1);
+  float d = 0.00;
   while (1)
   {
     if (Serial.available()) {
@@ -297,16 +297,13 @@ void loop()
           {
             switch (n++) {
               case 0:
-                d = data / 100;
-                x_now = x_go(x_now, d, 1);
+                x_now = x_go(x_now, data, 1);
                 break;
               case 1:
-                d = data / 100;
-                y_go(d, 1);
+                y_go(data, 1);
                 break;
               case 2:
-                d = data / 100;
-                z_go(d, 1);
+                z_go(data, 1);
                 break;
               case 3:
                 analogWrite(FREZA, data);
@@ -332,4 +329,4 @@ void loop()
     Serial.println(zero_freza);
     Serial.println("<");
   }
-}
+ }
