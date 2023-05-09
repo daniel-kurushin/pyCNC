@@ -175,6 +175,7 @@ if __name__ == "__main__":
     #sleep(5)
     #GPIO.output(config.Freza, 0)
     cnc_init()
+    '''
     x_go(1000, 3)
     y_go(1000, 3)
     DUTY_CYCLE = 42
@@ -185,15 +186,15 @@ if __name__ == "__main__":
     freza.start(20)
     sleep(1)
     freza.stop()
-    
+    '''
 #    cnc_init()
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
     #go_to_coor(0, 16000) #zero cam two
-    #go_to_coor!!!(0,2635, 1500) #zero cam one 
+    go_to_coor(2635, 1500) #zero cam one 
     #print(coordinates)
-    #camera_screen(coordinates)
+    camera_screen(coordinates)
 
     GPIO.cleanup()
 
