@@ -192,7 +192,7 @@ if __name__ == "__main__":
    # y_go(5072, 1)
     #z_go(1500, 1)
     #go_to_coor(0, 16000) #zero cam two
-    go_to_coor(2635, 1500) #zero cam one 
+    go_to_coor(0, 2635)#, 1500) #zero cam one 
     #print(coordinates)
     camera_screen(coordinates)
 
