@@ -144,6 +144,19 @@ def zero_freza():
         z_go(1, 0.1)
     coordinates[coor_z] = 0
 
+def get_frames(id):
+    cam = cv.VideoCapture(id)
+    assert cam.isOpened()
+    cam.set(3, 1920)
+    cam.set(4, 1080)
+    out = np.zeros((int(cam.get(4)*2),int(cam.get(3)*2), 3))
+    for i in range(10):
+        out[::2 ,  ::2] = cam.read()[1]
+        out[::2 , 1::2] = cam.read()[1]
+        out[1::2,  ::2] = cam.read()[1]
+        out[1::2, 1::2] = cam.read()[1]
+    return out
+
 def camera_screen(coordinates):
     ret, frame = cv.VideoCapture(0).read()
     screen_name = f'/tmp/cnc/{str(coordinates)}.jpeg'
@@ -193,9 +206,9 @@ if __name__ == "__main__":
     #z_go(1500, 1)
     go_to_coor(0, 16000) #zero cam two
     #go_to_coor(0, 2635)#, 1500) #zero cam one 
-    #print(coordinates)
-    camera_screen(coordinates)
-
+    print(coordinates)
+    img = get_frames(0)
+    cv.imwrite(f'/tmp/out_{0}_{str(int(time())%1000)}.jpeg', img)
     GPIO.cleanup()
 
 
