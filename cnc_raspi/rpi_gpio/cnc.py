@@ -5,7 +5,7 @@ TODO:
 """
 import RPi.GPIO as GPIO
 import config
-from time import sleep
+from time import sleep, time
 import cv2 as cv
 import numpy as np
 import sys
