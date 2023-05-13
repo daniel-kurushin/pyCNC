@@ -189,7 +189,7 @@ if __name__ == "__main__":
     #GPIO.output(config.Freza, 1)
     #sleep(5)
     #GPIO.output(config.Freza, 0)
-    cnc_init()
+    #cnc_init()
     '''
     x_go(1000, 3)
     y_go(1000, 3)
@@ -203,7 +203,9 @@ if __name__ == "__main__":
     freza.stop()
     '''
     cnc_init()
-    go_to_coor(0, 2635, 1500)
+    y_go(2635, 1)
+    z_go(1500, 1)
+    #go_to_coor(0, 2635, 1500)
     img = get_frames(1)
     cv.imwrite(f'/tmp/out_{0}_{str(int(time())%1000)}.jpeg', img)
    # x_go(20688, 1)
