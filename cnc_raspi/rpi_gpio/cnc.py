@@ -74,6 +74,19 @@ def z_go(mm, speed_z):
 
 def cnc_init():
     count = 0
+    while((GPIO.input(config.Z_END)) and (count < 270)):
+        z_go(-100, 1)
+        count += 1
+    z_go(500, 1)
+    count = 0
+    while((GPIO.input(config.Z_END)) and (count < 500)):
+        z_go(-1, 0.05)
+        count += 1
+    while(not (GPIO.input(config.Z_END))):
+        z_go(1, 0.1)
+    coordinates[coor_z] = 0
+    
+    count = 0
     while((GPIO.input(config.X_END)) and (count < 270)):
         x_go(-100, 1)
         count += 1
@@ -98,19 +111,6 @@ def cnc_init():
     while(not (GPIO.input(config.Y_END))):
         y_go(1, 0.1)
     coordinates[coor_y] = 0
-    
-    count = 0
-    while((GPIO.input(config.Z_END)) and (count < 270)):
-        z_go(-100, 1)
-        count += 1
-    z_go(500, 1)
-    count = 0
-    while((GPIO.input(config.Z_END)) and (count < 500)):
-        z_go(-1, 0.05)
-        count += 1
-    while(not (GPIO.input(config.Z_END))):
-        z_go(1, 0.1)
-    coordinates[coor_z] = 0
     
 def zero_freza():
     count = 0
@@ -202,12 +202,14 @@ if __name__ == "__main__":
     sleep(1)
     freza.stop()
     '''
+    #zero cam one - 32.493 ; 0
     cnc_init()
-    y_go(2635, 1)
+    x_go(19673.8, 1)
+    y_go(19160.6, 1)
     z_go(1500, 1)
     #go_to_coor(0, 2635, 1500)
-    img = get_frames(1)
-    cv.imwrite(f'/tmp/out_{0}_{str(int(time())%1000)}.jpeg', img)
+    img = get_frames(2)
+    cv.imwrite(f'/tmp/out_{2}_{str(int(time())%1000)}.jpeg', img)
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
