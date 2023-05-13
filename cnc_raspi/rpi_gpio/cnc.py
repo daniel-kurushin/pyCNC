@@ -204,8 +204,8 @@ if __name__ == "__main__":
     '''
     #zero cam one - 32.493 ; 0
     cnc_init()
-    x_go(19674, 1)
-    y_go(19161, 1)
+    x_go(5173, 1)
+    y_go(3624, 1)
     z_go(1500, 1)
     #go_to_coor(0, 2635, 1500)
     img = get_frames(2)
