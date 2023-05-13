@@ -202,10 +202,14 @@ if __name__ == "__main__":
     sleep(1)
     freza.stop()
     '''
-#    cnc_init()
+    cnc_init()
+    go_to_coor(0, 2635, 1500)
+    img = get_frames(1)
+    cv.imwrite(f'/tmp/out_{0}_{str(int(time())%1000)}.jpeg', img)
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
+    '''
     for i in range(9):
         cnc_init()
         go_to_coor(0, 16000) #zero cam two
@@ -213,6 +217,7 @@ if __name__ == "__main__":
         print(coordinates)
         img = get_frames(0)
         cv.imwrite(f'/tmp/out_{0}_{str(int(time())%1000)}.jpeg', img)
+    '''
     GPIO.cleanup()
 
 
