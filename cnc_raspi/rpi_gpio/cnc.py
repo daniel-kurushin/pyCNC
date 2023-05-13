@@ -85,7 +85,7 @@ def cnc_init():
     while(not (GPIO.input(config.Z_END))):
         z_go(1, 0.1)
     coordinates[coor_z] = 0
-    
+
     count = 0
     while((GPIO.input(config.X_END)) and (count < 270)):
         x_go(-100, 1)
@@ -204,8 +204,8 @@ if __name__ == "__main__":
     '''
     #zero cam one - 32.493 ; 0
     cnc_init()
-    x_go(19673.8, 1)
-    y_go(19160.6, 1)
+    x_go(19674, 1)
+    y_go(19161, 1)
     z_go(1500, 1)
     #go_to_coor(0, 2635, 1500)
     img = get_frames(2)
