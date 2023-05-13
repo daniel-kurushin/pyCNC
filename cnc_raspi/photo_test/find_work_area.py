@@ -147,12 +147,12 @@ def find_corner_by_cam_one(img_path):
     vertical, horizontal = get_vertical_and_horizontal(lines)
     
     print(vertical)
-    cv.line(img,(605,276),(608,341),(255,0,0),2)
-    cv.line(img,(120,270),(175,268),(255,255,0),2)
-    cv.circle(img, (604,252), radius=2, color=(255, 0, 255), thickness=-1)
-    cv.circle(img, (600,251), radius=2, color=(255, 255, 255), thickness=-1)
-    #plt.imshow(img)
-    #plt.show()
+    cv.line(img,(585,110),(586,164),(255,0,0),2)
+    cv.line(img,(588,453),(640,453),(255,255,0),2)
+    cv.circle(img, (591,453), radius=2, color=(255, 0, 255), thickness=-1)
+    cv.circle(img, (640,480), radius=2, color=(255, 255, 255), thickness=-1)
+    plt.imshow(img)
+    plt.show()
     best_vertical = get_best_vertical(vertical)
     print(best_vertical)
     best_horisontal = get_best_horizontal(horizontal)
@@ -161,14 +161,16 @@ def find_corner_by_cam_one(img_path):
     line2 = Line(Point(best_horisontal[0], best_horisontal[1]), Point(best_horisontal[2], best_horisontal[3]))
     intersect = line1.intersection(line2)
     x_intersection = int(str(intersect[0][0]).split('/')[0]) / int(str(intersect[0][0]).split('/')[1])
-    y_intersection = int(str(intersect[0][1]).split('/')[0]) / int(str(intersect[0][1]).split('/')[1])
+    y_intersection = int(str(intersect[0][1])) #int(str(intersect[0][1]).split('/')[0]) / int(str(intersect[0][1]).split('/')[1])
     print(x_intersection, y_intersection)
 
 if __name__ == '__main__':
-    #find_corner_by_cam_one('/tmp/out_2_834.jpeg')
+    find_corner_by_cam_one('/tmp/out_2_815.jpeg')
+    '''
     img_orig = cv.imread('/home/duhanin/Изображения/cnc/cnc_test_1/test_ten/out_0_912.jpeg')
     out = correcting_perspective(img_orig)
     cv.imwrite('/tmp/out_linear.jpg', out)
     out_pix_coor = find_board_by_cam_two('/tmp/out_linear.jpg', 666)
     coor_board_by_cam_two = convert_cam_0_to_mm(out_pix_coor)
     print(coor_board_by_cam_two)
+    '''
