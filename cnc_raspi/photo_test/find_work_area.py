@@ -12,6 +12,15 @@ def perimeter(box):
     D = ((box[3][0] - box[0][0])**2 + (box[3][1] - box[0][1])**2)**0.5
     return A + B + C + D
 
+def rotate(img_path, angle):
+    img = cv.imread(img_path)
+    rows,cols = img.shape[0], img.shape[1]
+    M = cv.getRotationMatrix2D(((cols-1)/2.0,(rows-1)/2.0),angle,1)
+    dst = cv.warpAffine(img,M,(cols,rows))
+    #plt.imshow(dst), plt.show()
+    #cv.imwrite('/tmp/out_2_4343_rotate.jpg', dst)
+    return dst
+
 def correcting_perspective(img):
     pt_A = [212,  284 ] 
     pt_B = [212,  2097] 
@@ -173,8 +182,12 @@ def find_corner_by_cam_one(img_path):
     return (640 - x_intersection)/34.5 , (494 - y_intersection)/34.5
 
 if __name__ == '__main__':
-    dx, dy = find_corner_by_cam_one('/tmp/out_2_815.jpeg')
-    print(dx, dy)
+    img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
+    plt.imshow(img)
+    plt.show()
+    cv.imwrite('/tmp/out_2_4343_rotate.jpg', img)
+    #dx, dy = find_corner_by_cam_one('/tmp/out_2_815.jpeg')
+    #print(dx, dy)
     '''
     img_orig = cv.imread('/home/duhanin/Изображения/cnc/cnc_test_1/test_ten/out_0_912.jpeg')
     out = correcting_perspective(img_orig)
