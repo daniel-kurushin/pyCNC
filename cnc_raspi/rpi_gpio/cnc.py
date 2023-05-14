@@ -208,6 +208,7 @@ if __name__ == "__main__":
     '''
     #zero cam one - 32.64 ; 0 ???31.93???
     cnc_init()
+    '''
     x_go(1909, 1)#(0, 1)
     y_go(3661, 1)#(2672, 1)
     z_go(1500, 1)#(1500, 1)
@@ -249,7 +250,7 @@ if __name__ == "__main__":
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
-    '''
+    
     for i in range(9):
         cnc_init()
         go_to_coor(0, 16000) #zero cam two
