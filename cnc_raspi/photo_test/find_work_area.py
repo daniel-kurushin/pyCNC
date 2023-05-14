@@ -19,7 +19,7 @@ def rotate(img_path, angle):
     dst = cv.warpAffine(img,M,(cols,rows))
     #plt.imshow(dst), plt.show()
     #cv.imwrite('/tmp/out_2_4343_rotate.jpg', dst)
-    return dst
+    return dst[20:940, 35:1261]
 
 def correcting_perspective(img):
     pt_A = [212,  284 ] 
@@ -188,8 +188,8 @@ def find_corner_by_cam_one(img):
     return (640 - x_intersection)/34.5 , (480 - y_intersection)/35
 
 if __name__ == '__main__':
-    #img = rotate('/tmp/out_2_6352.jpeg', angle = 1.8)
-    img = cv.imread('/tmp/out_2_76319.jpeg')
+    img = rotate('/tmp/out_2_76735.jpeg', angle = 1.8)
+    #img = cv.imread('/tmp/out_2_76735_.jpeg')
     dx, dy = find_corner_by_cam_one(img)
     print(dx, dy)
     #img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
