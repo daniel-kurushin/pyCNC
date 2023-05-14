@@ -182,17 +182,17 @@ def find_corner_by_cam_one(img_path):
     return (640 - x_intersection)/34.5 , (494 - y_intersection)/34.5
 
 if __name__ == '__main__':
-    img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
-    plt.imshow(img)
-    plt.show()
-    cv.imwrite('/tmp/out_2_4343_rotate.jpg', img)
+    #img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
+    #plt.imshow(img)
+    #plt.show()
+    #cv.imwrite('/tmp/out_2_4343_rotate.jpg', img)
     #dx, dy = find_corner_by_cam_one('/tmp/out_2_815.jpeg')
     #print(dx, dy)
-    '''
+    
     img_orig = cv.imread('/home/duhanin/Изображения/cnc/cnc_test_1/test_ten/out_0_912.jpeg')
     out = correcting_perspective(img_orig)
     cv.imwrite('/tmp/out_linear.jpg', out)
     out_pix_coor = find_board_by_cam_two('/tmp/out_linear.jpg', 666)
     coor_board_by_cam_two = convert_cam_0_to_mm(out_pix_coor)
     print(coor_board_by_cam_two)
-    '''
+    
