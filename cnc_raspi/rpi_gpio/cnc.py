@@ -204,12 +204,14 @@ if __name__ == "__main__":
     '''
     #zero cam one - 32.64 ; 0 ???31.93???
     cnc_init()
-    x_go(1813, 1)#(0, 1)
-    y_go(3635, 1)#(2672, 1)
+    x_go(1849, 1)#(0, 1)
+    y_go(3710, 1)#(2672, 1)
     z_go(1500, 1)#(1500, 1)
     #go_to_coor(0, 2635, 1500)
     img = get_frames(2)
-    cv.imwrite(f'/tmp/out_{2}_{str(int(time())%100000)}.jpeg', img)
+    t = str(int(time())%100000)
+    cv.imwrite(f'/tmp/out_{2}_{t}.jpeg', img)
+    print(f"[INFO:] img write in /tmp/out_{2}_{t}.jpeg")
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)

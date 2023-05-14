@@ -189,7 +189,7 @@ def find_corner_by_cam_one(img):
 
 if __name__ == '__main__':
     #img = rotate('/tmp/out_2_6352.jpeg', angle = 1.8)
-    img = cv.imread('/tmp/out_2_6352.jpeg')
+    img = cv.imread('/tmp/out_2_75073.jpeg')
     dx, dy = find_corner_by_cam_one(img)
     print(dx, dy)
     #img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
