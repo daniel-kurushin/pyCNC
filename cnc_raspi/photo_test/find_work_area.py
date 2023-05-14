@@ -5,6 +5,10 @@ from glob import glob
 from time import time, sleep
 from sympy import Line, Point
 
+A = 9
+def test():
+    print('testt')
+
 def perimeter(box):
     A = ((box[1][0] - box[0][0])**2 + (box[1][1] - box[0][1])**2)**0.5
     B = ((box[2][0] - box[1][0])**2 + (box[2][1] - box[1][1])**2)**0.5
@@ -183,14 +187,16 @@ def find_corner_by_cam_one(img):
     print(x_intersection, y_intersection)
     cv.circle(img, (int(x_intersection),int(y_intersection)), radius=2, color=(255, 0, 255), thickness=-1)
     cv.circle(img, (640,480), radius=2, color=(255, 255, 255), thickness=-1)
-    plt.imshow(img)
-    plt.show()
-    return (640 - x_intersection)/34.5 , (480 - y_intersection)/35
+    #plt.imshow(img)
+    #plt.show()
+    return (640 - x_intersection)/34.5 , (480 - y_intersection)/35, img
 
 if __name__ == '__main__':
-    img = rotate('/tmp/out_2_78598.jpeg', angle = 1.8)
+    img = rotate('/tmp/out_2_79062.jpeg', angle = 1.8)
     #img = cv.imread('/tmp/out_2_76735_.jpeg')
-    dx, dy = find_corner_by_cam_one(img)
+    dx, dy, img = find_corner_by_cam_one(img)
+    plt.imshow(img)
+    plt.show()
     dx = int(round(dx, 2) * 100)
     dy = int(round(dy, 2) * 100)
     print(dx, dy)

@@ -3,12 +3,15 @@ TODO:
 1) sum time by onece
 2) averenge END's for best init
 """
-import RPi.GPIO as GPIO
-import config
+import rpi_gpio.config
 from time import sleep, time
 import cv2 as cv
 import numpy as np
 import sys
+sys.path.append('..')
+import photo_test.find_work_area
+print(photo_test.find_work_area.A)
+import RPi.GPIO as GPIO
 
 FRW =  1
 BCK = -1
@@ -212,6 +215,14 @@ if __name__ == "__main__":
     t = str(int(time())%100000)
     cv.imwrite(f'/tmp/out_{2}_{t}.jpeg', img)
     print(f"[INFO:] img write in /tmp/out_{2}_{t}.jpeg")
+    img = rotate(f'/tmp/out_{2}_{t}.jpeg', angle = 1.8)
+    #img = cv.imread('/tmp/out_2_76735_.jpeg')
+    dx, dy, img = find_corner_by_cam_one(img)
+    #plt.imshow(img)
+    #plt.show()
+    dx = int(round(dx, 2) * 100)
+    dy = int(round(dy, 2) * 100)
+    print(dx, dy)
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
