@@ -202,14 +202,14 @@ if __name__ == "__main__":
     sleep(1)
     freza.stop()
     '''
-    #zero cam one - 32.493 ; 0
+    #zero cam one - 32.493 ; 0 ???31.93???
     cnc_init()
-    x_go(1923, 1)
-    y_go(3624, 1)
+    x_go(0, 1)
+    y_go(2635, 1)
     z_go(1500, 1)
     #go_to_coor(0, 2635, 1500)
     img = get_frames(2)
-    cv.imwrite(f'/tmp/out_{2}_{str(int(time())%1000)}.jpeg', img)
+    cv.imwrite(f'/tmp/out_{2}_{str(int(time())%10000)}.jpeg', img)
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
