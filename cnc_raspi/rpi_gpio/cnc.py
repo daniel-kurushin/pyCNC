@@ -225,7 +225,7 @@ if __name__ == "__main__":
     dy = int(round(dy, 2) * 100)
     print(dx, dy)
     count = 0
-    while (count < 150) or ((dx**2 + dy**)**0.5 < 6):
+    while (count < 150) or ((dx**2 + dy**2)**0.5 < 6):
         x_go(-dx, 1)
         y_go(dy, 1)
         img = get_frames(2)
