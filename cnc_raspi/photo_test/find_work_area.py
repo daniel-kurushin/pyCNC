@@ -188,9 +188,11 @@ def find_corner_by_cam_one(img):
     return (640 - x_intersection)/34.5 , (480 - y_intersection)/35
 
 if __name__ == '__main__':
-    img = rotate('/tmp/out_2_77654.jpeg', angle = 1.8)
+    img = rotate('/tmp/out_2_78177.jpeg', angle = 1.8)
     #img = cv.imread('/tmp/out_2_76735_.jpeg')
     dx, dy = find_corner_by_cam_one(img)
+    dx = int(round(dx, 2) * 100)
+    dy = int(round(dy, 2) * 100)
     print(dx, dy)
     #img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
     #plt.imshow(img)
