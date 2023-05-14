@@ -10,9 +10,10 @@ import numpy as np
 import sys
 sys.path.append('..')
 import photo_test.find_work_area
-print(photo_test.find_work_area.A)
+#print(photo_test.find_work_area.A)
 import RPi.GPIO as GPIO
 
+config = rpi_gpio.config
 FRW =  1
 BCK = -1
 coor_x     = 0
