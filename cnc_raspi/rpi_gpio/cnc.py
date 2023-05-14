@@ -225,7 +225,7 @@ if __name__ == "__main__":
     dy = int(round(dy, 2) * 100)
     print(dx, dy)
     count = 0
-    while (count < 150) or ((dx**2 + dy**2)**0.5 < 6):
+    while (count < 150) or ((dx**2 + dy**2)**0.5 < 120):
         x_go(-dx, 1)
         y_go(dy, 1)
         img = get_frames(2)
@@ -241,9 +241,11 @@ if __name__ == "__main__":
         dy = int(round(dy, 2) * 100)
         print(dx, dy)
         count += 1
+    print("READY")
     print(count)
     print(dx, dy)
     print(f"[INFO:] img write in /tmp/out_{2}_{t}.jpeg")
+    print(coordinates)
    # x_go(20688, 1)
    # y_go(5072, 1)
     #z_go(1500, 1)
