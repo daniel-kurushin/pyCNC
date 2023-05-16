@@ -84,12 +84,12 @@ def get_vertical_and_horizontal(lines, img):
             cv.line(img,(x1,y1),(x2,y2),(128,0,128),2)
             vertical.append((x1, y1, x2, y2))
         elif y1 == y2 :
-            #cv.line(img,(x1,y1),(x2,y2),(255,0,0),2)
+            cv.line(img,(x1,y1),(x2,y2),(255,0,0),2)
             horizontal.append((x1, y1, x2, y2))
         else:
             z = np.polyfit([x1, x2], [y1, y2], 1)
             if abs(z[0]) <= 1:
-                #cv.line(img,(x1,y1),(x2,y2),(255,0,0),2)
+                cv.line(img,(x1,y1),(x2,y2),(255,0,0),2)
                 horizontal.append((x1, y1, x2, y2))
             elif abs(z[0]) > 1 :
                 cv.line(img,(x1,y1),(x2,y2),(128,0,128),2)
@@ -203,7 +203,7 @@ if __name__ == '__main__':
     #img = rotate('/tmp/out_2_4343.jpeg', angle = 1.8)
     #plt.imshow(img)
     #plt.show()
-    #cv.imwrite('/tmp/out_2_4343_rotate.jpg', img)
+    cv.imwrite('/tmp/out_2_4343_rotate.jpg', img)
     #dx, dy = find_corner_by_cam_one('/tmp/out_2_815.jpeg')
     #print(dx, dy)
     '''
